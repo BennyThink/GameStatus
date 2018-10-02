@@ -20,15 +20,6 @@ var PageConfig = {
                     type: 'success'
                 });
             },
-            addGame: function (add) {
-                // console.log(add);
-                //steam://rungameid/550 +connect game.bennythink.com:27020
-                this.$message({
-                    message: '游戏加入尚未实现',
-                    type: 'success'
-                });
-                // window.open(add.row.address)
-            },
             mail: function (add) {
                 window.open('mailto:benny.think@gmail.com?subject='
                     + add.row.name + ': ' + add.row.address + ' 反馈' + '&body=Hi Benny,\n')

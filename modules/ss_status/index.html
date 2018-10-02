@@ -22,7 +22,7 @@
         <div class="title" v-html="sys_title"></div>
         <a class="menu-toggle fw-toggle fa fa-bars" @click="menu_collapse=!menu_collapse"></a>
     </el-header>
-    <el-container >
+    <el-container>
         <el-menu
                 ref="menu"
                 class="el-aside fw-menu"
@@ -77,17 +77,7 @@
                 >
                     <template scope="scope">
 
-                        <div v-if="column.prop=='player' && eval(scope.row.player)*100>=80">
-                            <el-progress :percentage="eval(scope.row.player)*100" :show-text="false"
-                                         status="exception"></el-progress>
-                            <span v-html="scope.row.player"></span>
-                        </div>
-
-                        <div v-else-if="column.prop=='player' && eval(scope.row.player)*100<80">
-                            <el-progress :percentage="eval(scope.row.player)*100" :show-text="false"></el-progress>
-                            <span v-html="scope.row.player"></span>
-                        </div>
-                        <div v-else-if="column.prop=='status'">
+                        <div v-if="column.prop=='status'">
                             <el-tooltip :content="scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
                             :'服务器已停止运行：\n'+scope.row.status[1]" placement="top">
 
@@ -98,6 +88,33 @@
                                         disabled>
                                 </el-switch>
                             </el-tooltip>
+                        </div>
+                        <div v-else-if="column.prop=='port_pass'">
+                            <el-popover
+                                    placement="bottom"
+                                    trigger="click"
+                                    title="端口密码详情"
+                                    @hide="popoverHide">
+
+                                <el-table :data="inner_table_data.slice((insidePage-1)*5,insidePage*5)"
+                                          stripe height="100%">
+                                    <el-table-column label="端口" prop="port" width=""></el-table-column>
+                                    <el-table-column label="密码" prop="password" width="140"></el-table-column>
+                                </el-table>
+                                <el-pagination
+                                        @current-change="insideChange"
+                                        :current-page="insidePage"
+                                        :page-size="5"
+                                        :current-page="insidePage"
+                                        layout="prev, pager, next"
+                                        :total="inner_data_length">
+                                </el-pagination>
+                                <a href="javascript:;" slot="reference"
+                                   @click="aClick(scope.row.port_pass)">
+                                    点击查看</a>
+                            </el-popover>
+
+
                         </div>
                         <div v-else-if="column.prop=='ping' && scope.row.ping">
                             <span v-html="scope.row.ping"></span>
@@ -115,17 +132,7 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column label="操作" width="90">
-                    <template slot-scope="scope">
-                        <el-tooltip class="item" effect="light" content="加入游戏啊（＞人＜；）" placement="right-end">
-                            <el-button type="text" icon="el-icon-plus" @click="addGame(scope)"></el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="light" content="邮件反馈呗(。・∀・)ノ" placement="right-end">
 
-                            <el-button type="text" icon="el-icon-message" @click="mail(scope)"></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
             </el-table>
             <el-pagination
                     id="pageDiv"

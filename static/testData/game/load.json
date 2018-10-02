@@ -33,7 +33,7 @@
       "prop": "CPU",
       "type": "string",
       "label": "CPU",
-      "width": "80"
+      "width": "150"
     },
     {
       "sortable": false,
@@ -76,7 +76,7 @@
       "name": "Benny's L====rver",
       "address": "game.b=",
       "player": "60/64",
-      "CPU": "1.2",
+      "CPU": "1596min 38.230s",
       "memory": "32.12M",
       "status": [
         true,

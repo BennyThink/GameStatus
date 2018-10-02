@@ -5,6 +5,9 @@ var PageConfig = {
         data: {
             menu_index: "ss_status",
             filter: {},
+            insidePage: 1,
+            inner_data_length: 0,
+            inner_table_data: [],
         },
         computed: {
             calTableHeight: function () {
@@ -13,6 +16,16 @@ var PageConfig = {
             }
         },
         methods: {
+            insideChange: function (v) {
+                this.insidePage = v;
+            },
+            aClick: function (raw) {
+                this.inner_data_length = raw.length;
+                this.inner_table_data = JSON.parse(JSON.stringify(raw));
+            },
+            popoverHide: function () {
+                this.insidePage = 1;
+            },
             refresh: function () {
                 app.loadData();
                 this.$message({
@@ -20,20 +33,10 @@ var PageConfig = {
                     type: 'success'
                 });
             },
-            addGame: function (add) {
-                // console.log(add);
-                //steam://rungameid/550 +connect game.bennythink.com:27020
-                this.$message({
-                    message: '游戏加入尚未实现',
-                    type: 'success'
-                });
-                // window.open(add.row.address)
-            },
             mail: function (add) {
                 window.open('mailto:benny.think@gmail.com?subject='
                     + add.row.name + ': ' + add.row.address + ' 反馈' + '&body=Hi Benny,\n')
             }
-
 
         }
     }
