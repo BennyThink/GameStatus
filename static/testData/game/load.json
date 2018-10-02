@@ -65,7 +65,10 @@
       "player": "3/4",
       "CPU": "0.2",
       "memory": "312.12M",
-      "status": true,
+      "status": [
+        true,
+        "active (running) since Sun 2018-09-30 17:57:56 CST; 1 day 19h ago"
+      ],
       "ping": 31
     },
     {
@@ -74,8 +77,11 @@
       "address": "game.b=",
       "player": "60/64",
       "CPU": "1.2",
-      "memory": "312.12M",
-      "status": true,
+      "memory": "32.12M",
+      "status": [
+        true,
+        "运行中"
+      ],
       "ping": 22
     },
     {
@@ -85,7 +91,10 @@
       "player": "3/4",
       "CPU": "0.2",
       "memory": "312.12M",
-      "status": true,
+      "status": [
+        true,
+        "没死"
+      ],
       "ping": 918
     },
     {
@@ -95,7 +104,10 @@
       "player": "3/14",
       "CPU": "0.2",
       "memory": "312.12M",
-      "status": true,
+      "status": [
+        true,
+        "活着"
+      ],
       "ping": 76
     },
     {
@@ -105,7 +117,10 @@
       "player": "3/4",
       "CPU": "0.2",
       "memory": "312.12M",
-      "status": true,
+      "status": [
+        false,
+        "dead"
+      ],
       "ping": 64
     },
     {
@@ -115,7 +130,10 @@
       "player": "20/24",
       "CPU": "0.2",
       "memory": "312.12M",
-      "status": false,
+      "status": [
+        false,
+        "嗝屁啦"
+      ],
       "ping": false
     }
   ]

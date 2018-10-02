@@ -1,9 +1,9 @@
 var PageConfig = {
-    title: "游戏服务器状态",
-    load_url: AjaxUrls.game_status,
+    title: "影梭服务器状态",
+    load_url: AjaxUrls.ss_status,
     eui: {
         data: {
-            menu_index: "game_status",
+            menu_index: "ss_status",
             filter: {},
         },
         computed: {

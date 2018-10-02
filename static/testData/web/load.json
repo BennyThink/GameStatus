@@ -1,18 +1,11 @@
 {
   "column": [
     {
-      "sortable": true,
-      "prop": "game",
-      "type": "string",
-      "label": "游戏",
-      "width": "80"
-    },
-    {
       "sortable": false,
       "prop": "name",
       "type": "string",
       "label": "名称",
-      "width": ""
+      "width": "140"
     },
     {
       "sortable": false,
@@ -23,20 +16,41 @@
     },
     {
       "sortable": false,
-      "prop": "player",
+      "prop": "arch",
       "type": "string",
-      "label": "玩家",
-      "width": "120"
-    },
-    {
-      "sortable": false,
-      "prop": "CPU",
-      "type": "string",
-      "label": "CPU",
+      "label": "架构",
       "width": "80"
     },
     {
       "sortable": false,
+      "prop": "nginx",
+      "type": "string",
+      "label": "Nginx",
+      "width": "120"
+    },
+    {
+      "sortable": false,
+      "prop": "mysql",
+      "type": "string",
+      "label": "MySQL",
+      "width": "120"
+    },
+    {
+      "sortable": false,
+      "prop": "php",
+      "type": "string",
+      "label": "PHP",
+      "width": "120"
+    },
+    {
+      "sortable": false,
+      "prop": "app",
+      "type": "string",
+      "label": "程序",
+      "width": "100"
+    },
+    {
+      "sortable": true,
       "prop": "memory",
       "type": "string",
       "label": "内存",
@@ -48,75 +62,77 @@
       "type": "string",
       "label": "状态",
       "width": "80"
-    },
-    {
-      "sortable": true,
-      "prop": "ping",
-      "type": "string",
-      "label": "延迟",
-      "width": "90"
     }
   ],
   "data": [
     {
-      "game": "L4D2",
-      "name": "Benny's L4D2 Per",
-      "address": "game.bennythink.com:27015",
-      "player": "3/4",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": true,
-      "ping": 31
+      "name": "土豆不好吃",
+      "address": "https://www.bennythink.com/",
+      "arch": "LNMP",
+      "nginx": [
+        "1.2s/32.1M",
+        "Nginx 详细信息"
+      ],
+      "mysql": [
+        "1.5s/233.M",
+        "MySQL详细信息"
+      ],
+      "php": [
+        "3.5s/553.M",
+        "PHP详细信息"
+      ],
+      "app": "WordPress",
+      "memory": "381.92M",
+      "status": [
+        true,
+        "网站运行中"
+      ]
     },
-    {
-      "game": "L4D2",
-      "name": "Benny's L====rver",
-      "address": "game.b=",
-      "player": "60/64",
-      "CPU": "1.2",
-      "memory": "312.12M",
-      "status": true,
-      "ping": 22
+      {
+      "name": "JetBrains 激活器",
+      "address": "https://jbls.bennythink.com/",
+      "arch": "LNF",
+      "nginx": [
+        "1.5s/32.1M",
+        "Nginx 详细信息"
+      ],
+      "mysql": [
+        "N/A",
+        "N/A"
+      ],
+      "php": [
+        "N/A",
+        "N/A"
+      ],
+      "app": "Flask",
+      "memory": "31.92M",
+      "status": [
+        false,
+        "激活服务已停止"
+      ]
     },
-    {
-      "game": "L4D2",
-      "name": "Benny's Late Server",
-      "address": "game.beink.com:27015",
-      "player": "3/4",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": true,
-      "ping": 918
-    },
-    {
-      "game": "L4D2",
-      "name": "Benny's L4D2 Privatdase Server",
-      "address": "game.b015",
-      "player": "3/14",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": true,
-      "ping": 76
-    },
-    {
-      "game": "L24D2",
-      "name": "Ben2ny's L4D2 Private Server",
-      "address": "game.bennythink.com:27015",
-      "player": "3/4",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": true,
-      "ping": 64
-    },
-    {
-      "game": "CSGO",
-      "name": "Benny's CSGO Private Server",
-      "address": "game.bennythink.com:27015",
-      "player": "20/24",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": false,
-      "ping": false
+      {
+      "name": "天气预报",
+      "address": "https://weather.bennythink.com/",
+      "arch": "LNT",
+      "nginx": [
+        "1.2s/32.1M",
+        "Nginx 详细信息"
+      ],
+      "mysql": [
+        "N/A",
+        "N/A"
+      ],
+      "php": [
+        "N/A",
+        "N/A"
+      ],
+      "app": "Tornado",
+      "memory": "31.92M",
+      "status": [
+        true,
+        "天气预报运行中"
+      ]
     }
   ]
 }

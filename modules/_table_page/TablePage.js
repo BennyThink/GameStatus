@@ -34,6 +34,12 @@ var _defaultConfig = {
                 index: "web_status",
                 url: "../web_status/index.html",
                 font_icon: "fa-server"
+            },
+            {
+                title: "影梭状态",
+                index: "ss_status",
+                url: "../ss_status/index.html",
+                font_icon: "fa-paper-plane-o"
             }
 
 

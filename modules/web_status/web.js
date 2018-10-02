@@ -1,9 +1,9 @@
 var PageConfig = {
-    title: "游戏服务器状态",
-    load_url: AjaxUrls.game_status,
+    title: "网站服务器状态",
+    load_url: AjaxUrls.web_status,
     eui: {
         data: {
-            menu_index: "game_status",
+            menu_index: "web_status",
             filter: {},
         },
         computed: {

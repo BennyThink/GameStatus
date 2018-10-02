@@ -22,7 +22,7 @@
         <div class="title" v-html="sys_title"></div>
         <a class="menu-toggle fw-toggle fa fa-bars" @click="menu_collapse=!menu_collapse"></a>
     </el-header>
-    <el-container >
+    <el-container>
         <el-menu
                 ref="menu"
                 class="el-aside fw-menu"
@@ -76,17 +76,37 @@
                                  :fixed="column.fixed" :sortable="column.sortable" :width="column.width"
                 >
                     <template scope="scope">
-
-                        <div v-if="column.prop=='player' && eval(scope.row.player)*100>=80">
-                            <el-progress :percentage="eval(scope.row.player)*100" :show-text="false"
-                                         status="exception"></el-progress>
-                            <span v-html="scope.row.player"></span>
+                        <div v-if="column.prop=='nginx' || column.prop=='mysql'||column.prop=='php'">
+                            <el-popover
+                                    placement="top-start"
+                                    :title="column.label+' 状态'"
+                                    width="200"
+                                    trigger="hover"
+                                    :content="scope.row[column.prop][1]">
+                                <a href="javascript:" slot="reference"> <span v-html="scope.row[column.prop][0]"></span></a>
+                            </el-popover>
+                        </div>
+                        <div v-else-if="column.prop=='address' ">
+                           <a :href="scope.row[column.prop]" target="_blank">
+                                <span v-html="scope.row[column.prop]"></span>
+                              </a>
+                        </div>
+                        <div v-else-if="column.prop=='arch' && scope.row.arch==='LNMP'">
+                            <el-tooltip content="Linux+Nginx+MySQL+PHP" placement="top">
+                                <span>LNMP</span>
+                            </el-tooltip>
+                        </div>
+                        <div v-else-if="column.prop=='arch' && scope.row.arch=='LNT'">
+                            <el-tooltip content="Linux+Nginx+Tornado" placement="top">
+                                <span>LNT</span>
+                            </el-tooltip>
+                        </div>
+                        <div v-else-if="column.prop=='arch' && scope.row.arch=='LNF'">
+                            <el-tooltip content="Linux+Nginx+Flask" placement="top">
+                                <span>LNF</span>
+                            </el-tooltip>
                         </div>
 
-                        <div v-else-if="column.prop=='player' && eval(scope.row.player)*100<80">
-                            <el-progress :percentage="eval(scope.row.player)*100" :show-text="false"></el-progress>
-                            <span v-html="scope.row.player"></span>
-                        </div>
                         <div v-else-if="column.prop=='status'">
                             <el-tooltip :content="scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
                             :'服务器已停止运行：\n'+scope.row.status[1]" placement="top">
@@ -99,15 +119,6 @@
                                 </el-switch>
                             </el-tooltip>
                         </div>
-                        <div v-else-if="column.prop=='ping' && scope.row.ping">
-                            <span v-html="scope.row.ping"></span>
-                        </div>
-                        <div v-else-if="column.prop=='ping' ">
-                            <el-tooltip class="item" effect="light" content="无法ping" placement="right-end">
-                                <i class="el-icon-error"></i>
-                            </el-tooltip>
-
-                        </div>
 
                         <div v-else>
                             <span v-html="scope.row[column.prop]"></span>
@@ -115,17 +126,7 @@
                     </template>
 
                 </el-table-column>
-                <el-table-column label="操作" width="90">
-                    <template slot-scope="scope">
-                        <el-tooltip class="item" effect="light" content="加入游戏啊（＞人＜；）" placement="right-end">
-                            <el-button type="text" icon="el-icon-plus" @click="addGame(scope)"></el-button>
-                        </el-tooltip>
-                        <el-tooltip class="item" effect="light" content="邮件反馈呗(。・∀・)ノ" placement="right-end">
 
-                            <el-button type="text" icon="el-icon-message" @click="mail(scope)"></el-button>
-                        </el-tooltip>
-                    </template>
-                </el-table-column>
             </el-table>
             <el-pagination
                     id="pageDiv"
@@ -147,6 +148,6 @@
 
 </body>
 
-<script src="game.js" async></script>
+<script src="web.js" async></script>
 <script src="../_table_page/TablePage.js" async></script>
 </html>
