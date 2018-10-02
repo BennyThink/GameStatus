@@ -1,0 +1,122 @@
+{
+  "column": [
+    {
+      "sortable": true,
+      "prop": "game",
+      "type": "string",
+      "label": "游戏",
+      "width": "80"
+    },
+    {
+      "sortable": false,
+      "prop": "name",
+      "type": "string",
+      "label": "名称",
+      "width": ""
+    },
+    {
+      "sortable": false,
+      "prop": "address",
+      "type": "string",
+      "label": "地址",
+      "width": ""
+    },
+    {
+      "sortable": false,
+      "prop": "player",
+      "type": "string",
+      "label": "玩家",
+      "width": "120"
+    },
+    {
+      "sortable": false,
+      "prop": "CPU",
+      "type": "string",
+      "label": "CPU",
+      "width": "80"
+    },
+    {
+      "sortable": false,
+      "prop": "memory",
+      "type": "string",
+      "label": "内存",
+      "width": "100"
+    },
+    {
+      "sortable": false,
+      "prop": "status",
+      "type": "string",
+      "label": "状态",
+      "width": "80"
+    },
+    {
+      "sortable": true,
+      "prop": "ping",
+      "type": "string",
+      "label": "延迟",
+      "width": "90"
+    }
+  ],
+  "data": [
+    {
+      "game": "L4D2",
+      "name": "Benny's L4D2 Per",
+      "address": "game.bennythink.com:27015",
+      "player": "3/4",
+      "CPU": "0.2",
+      "memory": "312.12M",
+      "status": true,
+      "ping": 31
+    },
+    {
+      "game": "L4D2",
+      "name": "Benny's L====rver",
+      "address": "game.b=",
+      "player": "60/64",
+      "CPU": "1.2",
+      "memory": "312.12M",
+      "status": true,
+      "ping": 22
+    },
+    {
+      "game": "L4D2",
+      "name": "Benny's Late Server",
+      "address": "game.beink.com:27015",
+      "player": "3/4",
+      "CPU": "0.2",
+      "memory": "312.12M",
+      "status": true,
+      "ping": 918
+    },
+    {
+      "game": "L4D2",
+      "name": "Benny's L4D2 Privatdase Server",
+      "address": "game.b015",
+      "player": "3/14",
+      "CPU": "0.2",
+      "memory": "312.12M",
+      "status": true,
+      "ping": 76
+    },
+    {
+      "game": "L24D2",
+      "name": "Ben2ny's L4D2 Private Server",
+      "address": "game.bennythink.com:27015",
+      "player": "3/4",
+      "CPU": "0.2",
+      "memory": "312.12M",
+      "status": true,
+      "ping": 64
+    },
+    {
+      "game": "CSGO",
+      "name": "Benny's CSGO Private Server",
+      "address": "game.bennythink.com:27015",
+      "player": "20/24",
+      "CPU": "0.2",
+      "memory": "312.12M",
+      "status": false,
+      "ping": false
+    }
+  ]
+}

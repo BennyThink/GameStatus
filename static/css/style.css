@@ -1,0 +1,150 @@
+html,
+body {
+    font-family: "Microsoft YaHei", "微软雅黑", "SimSun", "宋体", "Arial", "sans-serif";
+    background: #FFFFFF;
+    font-size: 14px;
+}
+
+.fw-header {
+    background: #438eb9;
+    border-bottom: 1px solid #0079aa;
+    color: #FFFFFF;
+    height: 46px !important;
+    padding: 0 12px;
+}
+
+.fw-header .menu-toggle {
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    padding: 15px 12px;
+}
+
+.fw-header .menu-toggle {
+    vertical-align: top;
+}
+
+.fw-header .menu-toggle:hover {
+    background-color: #367fa9;
+}
+
+.fw-header .menu-toggle:hover {
+    background-color: #367fa9;
+}
+
+.fw-header .title {
+    display: inline-block;
+    background-color: #367fa9;
+    font-size: 20px;
+    height: 100%;
+    vertical-align: top;
+    line-height: 50px;
+    padding: 0px 16px;
+}
+
+.fw-menu a {
+    text-decoration: none;
+}
+
+.fw-menu .el-menu-item i {
+    font-size: 18px;
+    margin-right: 3px;
+}
+
+.pj-main {
+    padding: 6px 10px;
+}
+
+.pj-table a {
+    display: inline-block;
+    color: #409EFF;
+}
+
+.pj-table th {
+    padding: 3px 3px;
+}
+
+.pj-table td {
+    padding: 5px 3px;
+}
+
+.pj-table td .el-button {
+    padding: 2px;
+    margin: 2px 6px 2px 0;
+}
+
+.pj-table th {
+    background: #fafafa;
+}
+
+.pj-pagination {
+    padding: 6px 3px;
+}
+
+.pj-toolbar {
+    height: 2.8em;
+    margin-bottom: .2em;
+    padding-left: 10px;
+    background: #f5f7fa;
+}
+
+.pj-toolbar .el-select .el-input {
+    width: 130px;
+}
+
+.pj-toolbar .el-select .el-input input {
+    height: 2.3em;
+}
+
+.pj-toolbar .el-input {
+    width: 220px;
+}
+
+.pj-toolbar .el-input input {
+    height: 2.35em;
+}
+
+.pj-toolbar .el-button,
+.pj-toolbar .el-checkbox {
+    margin-right: 8px;
+}
+
+.pj-toolbar .el-checkbox + .el-checkbox {
+    margin-left: 8px;
+}
+
+.pj-toolbar .file-upload {
+    display: inline-block;
+}
+
+.init-v-hidden {
+    visibility: hidden;
+}
+
+.fw-header .title {
+    background-color: transparent;
+    line-height: 45px;
+    padding: 0;
+}
+
+.fw-header .fw-logo {
+    display: inline-block;
+    height: 32px;
+    width: 32px;
+    background: url("/static/favicon.ico") no-repeat left center;
+    position: relative;
+    top: 6px;
+}
+
+.p-content, body, html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    position: relative
+}
+
+._p-filter-matched {
+    background-color: #ff0;
+    color: #000
+}
