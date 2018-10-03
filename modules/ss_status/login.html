@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="/static/css/element.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <script src="/static/js/vue.min.js" async></script>
+    <script src="/static/js/element.min.js"></script>
+    <script src="/static/js/axios.min.js" async></script>
+
+    <script src="/static/config/AjaxUrls.js" async></script>
+</head>
+<body>
+
+<el-container id="app">
+
+    <el-header ref="headerRef" class="fw-header ">
+        <div class="fw-logo"></div>
+        <div class="title" v-html="sys_title"></div>
+    </el-header>
+
+    <div class="login-box">
+
+        <el-row>
+            <el-col :span="8">
+                <el-input v-model="password" type="password" placeholder="请输入密码">
+                    <template slot="prepend">密码</template>
+                </el-input>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="8">
+                <el-button @click="login" style="width:100%" type="primary">登录</el-button>
+            </el-col>
+        </el-row>
+    </div>
+
+
+</el-container>
+
+</body>
+
+<style>
+    .el-row {
+        margin-bottom: 20px;
+    }
+
+    .login-box {
+        margin-top: 15%;
+        margin-left: 40%;
+    }
+
+</style>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            password: '',
+            sys_title: '影梭状态 - 登录'
+
+        },
+        created: function () {
+            document.getElementsByTagName('title')[0].innerText = this.sys_title;
+        },
+
+        methods: {
+            login: function () {
+
+
+                if (this.password === '') {
+                    this.$message({
+                        message: '密码为空！',
+                        type: 'error'
+                    });
+                    return;
+                }
+
+                // TODO: replace with ajax url
+                // TODO: security problem
+                if (this.password === '123456') {
+                    var date = new Date();
+                    date.setDate(date.getDate() + 10);
+                    document.cookie = 'auth=' + this.password + ';path=/;expires=' + date.toGMTString();
+                    this.$message({
+                        message: '登录成功！',
+                        type: 'success'
+                    });
+                    window.location = 'http://127.0.0.1:8888/modules/ss_status/index.html'
+                }
+                else {this.$message({
+                        message: '密码错误！',
+                        type: 'error'
+                    });
+                }
+            }
+        }
+    });
+
+</script>
+</html>

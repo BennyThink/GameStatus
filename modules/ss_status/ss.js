@@ -8,6 +8,8 @@ var PageConfig = {
             insidePage: 1,
             inner_data_length: 0,
             inner_table_data: [],
+            password: '',
+            auth: ''
         },
         computed: {
             calTableHeight: function () {
@@ -15,7 +17,21 @@ var PageConfig = {
                 return this.tableHeight
             }
         },
+        created: function () {
+            // TODO: 好像不行，dialog会被异步渲染。要不新开一个login.html写入cookie什么的吧
+            var arr, reg = new RegExp("(^| )" + 'auth' + "=([^;]*)(;|$)");
+            if (arr = document.cookie.match(reg))
+                console.log(arr[2]);
+            else
+                window.location = '/modules/ss_status/login.html'
+        },
         methods: {
+            sendAuth: function () {
+                this.authVisible = false;
+                console.log(this.password);
+                // TODO: 请求后端，如果状态码是200那么写入cookie，否则提示错误
+                document.cookie = "auth=" + this.password
+            },
             insideChange: function (v) {
                 this.insidePage = v;
             },

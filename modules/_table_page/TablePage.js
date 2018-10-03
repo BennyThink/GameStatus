@@ -74,6 +74,9 @@ var _defaultConfig = {
             //配置
             let result = {};
             let that = this;
+            if(this.menu_index==='ss_status')
+                PageConfig.load_url+=this.auth;
+          
             axios.get(PageConfig.load_url).then(function (res) {
                 //that.loading = false;
                 result['column'] = res.data.column;
