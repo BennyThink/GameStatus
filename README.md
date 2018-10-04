@@ -1,6 +1,9 @@
 # GameStatus
-Show my L4D2 server game status!
+Show my SourceServer server game status!
+
+# Software depenencies
+* MongoDB
 
 # Python requirements
 * Python 3 ONLY
-* pip package: tornado, python-valve
+* pip package: tornado, python-valve, apscheduler, paramiko

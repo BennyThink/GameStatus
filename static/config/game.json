@@ -1,11 +1,11 @@
 {
   "column": [
     {
-      "sortable": true,
+      "sortable": false,
       "prop": "game",
       "type": "string",
       "label": "游戏",
-      "width": "80"
+      "width": "70"
     },
     {
       "sortable": false,
@@ -27,7 +27,7 @@
       "prop": "map",
       "type": "string",
       "label": "地图",
-      "width": "200"
+      "width": "170"
     },
     {
       "sortable": false,
@@ -38,7 +38,7 @@
     },
     {
       "sortable": false,
-      "prop": "CPU",
+      "prop": "cpu",
       "type": "string",
       "label": "CPU",
       "width": "140"
@@ -48,45 +48,14 @@
       "prop": "memory",
       "type": "string",
       "label": "内存",
-      "width": "100"
+      "width": "80"
     },
     {
       "sortable": false,
       "prop": "status",
       "type": "string",
       "label": "状态",
-      "width": "80"
-    }
-  ],
-  "data": [
-    {
-      "game": "L4D2",
-      "name": "Benny's L4D2 Per",
-      "address": "game.bennythink.com:27015",
-      "map":"沼泽激战",
-      "player": "3/4",
-      "CPU": "122min 27.295s",
-      "memory": "312.12M",
-      "status": [
-        true,
-        "active (running) since Sun 2018-09-30 17:57:56 CST; 1 day 19h ago"
-      ],
-      "ping": 131
-    },
-
-    {
-      "game": "CSGO",
-      "name": "Benny's CSGO Private Server",
-      "address": "game.bennythink.com:27015",
-      "map":"沙漠之城",
-      "player": "20/24",
-      "CPU": "0.2",
-      "memory": "312.12M",
-      "status": [
-        false,
-        "嗝屁啦"
-      ],
-      "ping": false
+      "width": "70"
     }
   ]
 }

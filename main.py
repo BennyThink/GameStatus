@@ -12,9 +12,12 @@ import json
 import logging
 from platform import uname
 
+from apscheduler.schedulers.background import BackgroundScheduler
 from concurrent.futures import ThreadPoolExecutor
 from tornado import web, ioloop, httpserver, gen, options
 from tornado.concurrent import run_on_executor
+
+from resource.game import game_response, sync_game
 
 
 class BaseHandler(web.RequestHandler):
@@ -22,54 +25,28 @@ class BaseHandler(web.RequestHandler):
         pass
 
 
-class IndexHandler(BaseHandler):
-
-    def get(self):
-        # open('templates/index.html').read()
-        self.write('hello')
-
-    def post(self):
-        self.get()
-
-
-class StatusHandler(BaseHandler):
+class GameStatusHandler(BaseHandler):
     executor = ThreadPoolExecutor(max_workers=20)
 
     @run_on_executor
     def run_request(self):
-        """
-        sign and return
-        :return: hex and raw request in XML
-        """
-        # get parameter, compatibility with json
-        if self.request.headers.get('Content-Type') == 'application/json' and self.request.body:
-            data = json.loads(self.request.body)
-            city = data.get('city')
-            day = data.get('day')
-        else:
-            city = self.get_argument('city', None)
-            day = self.get_argument('day', None)
-
-        return json.dumps({})
+        return json.dumps(game_response())
 
     @gen.coroutine
     def get(self):
-        self.set_header("Content-Type", "application/json")
-        res = yield self.run_request()
-        self.write(res)
-
-    @gen.coroutine
-    def post(self):
+        args = self.get_query_arguments('refresh')
+        if args:
+            sync_game()
         self.set_header("Content-Type", "application/json")
         res = yield self.run_request()
         self.write(res)
 
 
 class RunServer:
-    handlers = [(r'/api/status', StatusHandler),
-                (
-                    r"/(.*)", web.StaticFileHandler,
-                    {"path": os.path.dirname(__file__), "default_filename": "index.html"})]
+    handlers = [(r'/api/game', GameStatusHandler),
+                (r'/api/web', GameStatusHandler),
+                (r"/(.*)", web.StaticFileHandler,
+                 {"path": os.path.dirname(__file__), "default_filename": "index.html"})]
     application = web.Application(handlers,
                                   static_path=os.path.join(os.path.dirname(__file__), "static"),
                                   debug=True
@@ -100,4 +77,8 @@ if __name__ == "__main__":
     options.parse_command_line()
     p = options.options.p
     h = options.options.h
+
+    scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+    scheduler.add_job(sync_game, 'interval', minutes=10)
+    scheduler.start()
     RunServer.run_server(port=p, host=h)

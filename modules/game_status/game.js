@@ -14,11 +14,26 @@ var PageConfig = {
         },
         methods: {
             refresh: function () {
-                app.loadData();
-                this.$message({
-                    message: '刷新成功',
-                    type: 'success'
+                app.loading = true;
+                var that = this;
+                axios.get(PageConfig.load_url + '?refresh=1').then(function (res) {
+                    app.loadData();
+                    app.loading = false;
+
+                    that.$message({
+                        message: '刷新成功',
+                        type: 'success'
+                    });
+                }).catch(function (err) {
+                    that.$message({
+                        message: '数据加载失败',
+                        type: 'error'
+                    });
+                    app.loading = false;
+                    console.log(err);
                 });
+
+
             },
             addGame: function (add) {
                 // console.log(add);
