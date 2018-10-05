@@ -17,34 +17,62 @@ from concurrent.futures import ThreadPoolExecutor
 from tornado import web, ioloop, httpserver, gen, options
 from tornado.concurrent import run_on_executor
 
-from resource.game import game_response, sync_game
+from resource.game import game_response, game_sync
+from resource.web import web_response, web_sync
 
 
 class BaseHandler(web.RequestHandler):
+    executor = ThreadPoolExecutor(max_workers=20)
+
     def data_received(self, chunk):
         pass
 
+    @staticmethod
+    def response_func():
+        pass
 
-class GameStatusHandler(BaseHandler):
-    executor = ThreadPoolExecutor(max_workers=20)
+    @staticmethod
+    def sync_func():
+        pass
 
     @run_on_executor
     def run_request(self):
-        return json.dumps(game_response())
+        return json.dumps(self.response_func())
 
     @gen.coroutine
     def get(self):
         args = self.get_query_arguments('refresh')
         if args:
-            sync_game()
+            self.sync_func()
         self.set_header("Content-Type", "application/json")
         res = yield self.run_request()
+
         self.write(res)
+
+
+class GameStatusHandler(BaseHandler):
+    @staticmethod
+    def response_func():
+        return game_response()
+
+    @staticmethod
+    def sync_func():
+        return game_sync()
+
+
+class WebStatusHandler(BaseHandler):
+    @staticmethod
+    def response_func():
+        return web_response()
+
+    @staticmethod
+    def sync_func():
+        return web_sync()
 
 
 class RunServer:
     handlers = [(r'/api/game', GameStatusHandler),
-                (r'/api/web', GameStatusHandler),
+                (r'/api/web', WebStatusHandler),
                 (r"/(.*)", web.StaticFileHandler,
                  {"path": os.path.dirname(__file__), "default_filename": "index.html"})]
     application = web.Application(handlers,
@@ -78,7 +106,7 @@ if __name__ == "__main__":
     p = options.options.p
     h = options.options.h
 
-    scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
-    scheduler.add_job(sync_game, 'interval', minutes=10)
-    scheduler.start()
+    # scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+    # scheduler.add_job(game_sync, 'interval', minutes=10)
+    # scheduler.start()
     RunServer.run_server(port=p, host=h)

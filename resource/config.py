@@ -13,8 +13,10 @@ GAME = [{"app_id": 550, "host": "game.bennythink.com", "port": 27021, "username"
          "password": "123456", "cmd": "systemctl status csgo"},
         ]
 WEB = [
-    {"host": "localhost", "username": "root", "password": "", },
-    {"host": "localhost", "username": "root", "password": "", }
+    {"app_id": 1, "host": "weather.bennythink.com", "username": "root", "password": "123456",
+     "cmd": "systemctl status weather"},
+    {"app_id": 2, "host": "jbls.bennythink.com", "username": "root", "password": "123456",
+     "cmd": "systemctl status jbls"}
 ]
 
 SS = [

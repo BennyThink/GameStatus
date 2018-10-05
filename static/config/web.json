@@ -49,31 +49,5 @@
       "label": "状态",
       "width": "80"
     }
-  ],
-  "data": [
-    {
-      "name": "JetBrains 激活器",
-      "address": "https://jbls.bennythink.com/",
-      "arch": "LNF",
-      "app": "Flask",
-      "cpu": "261min 29.511s",
-      "memory": "331.92M",
-      "status": [
-        false,
-        "激活服务已停止"
-      ]
-    },
-    {
-      "name": "天气预报",
-      "address": "https://weather.bennythink.com/",
-      "arch": "LNT",
-      "app": "Tornado",
-      "cpu": "261min 29.511s",
-      "memory": "311.92M",
-      "status": [
-        true,
-        "天气预报运行中"
-      ]
-    }
   ]
 }

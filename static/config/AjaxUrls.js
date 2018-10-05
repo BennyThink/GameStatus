@@ -1,6 +1,6 @@
 var AjaxUrls = {
     game_status: "/api/game",
-    web_status: "/static/testData/web/load.json",
+    web_status: "/api/web",
     ss_status: "/static/testData/ss/load.json",
     login:'/login'
 };

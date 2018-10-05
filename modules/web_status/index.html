@@ -68,7 +68,7 @@
                 <el-table-column
                         type="index"
                         label="#"
-                        width="40">
+                        width="45">
                 </el-table-column>
 
 
@@ -87,9 +87,9 @@
                             </el-popover>
                         </div>
                         <div v-else-if="column.prop=='address' ">
-                           <a :href="scope.row[column.prop]" target="_blank">
+                            <a :href="scope.row[column.prop]" target="_blank">
                                 <span v-html="scope.row[column.prop]"></span>
-                              </a>
+                            </a>
                         </div>
                         <div v-else-if="column.prop=='arch' && scope.row.arch==='LNMP'">
                             <el-tooltip content="Linux+Nginx+MySQL+PHP" placement="top">
@@ -126,7 +126,13 @@
                     </template>
 
                 </el-table-column>
-
+                <el-table-column label="操作" width="85">
+                    <template slot-scope="scope">
+                        <el-tooltip class="item" effect="light" content="邮件反馈呗(。・∀・)ノ" placement="right-end">
+                            <el-button type="text" icon="el-icon-message" @click="mail(scope)"></el-button>
+                        </el-tooltip>
+                    </template>
+                </el-table-column>
             </el-table>
             <el-pagination
                     id="pageDiv"

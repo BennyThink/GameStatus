@@ -7,7 +7,7 @@
 
 __author__ = "Benny <benny@bennythink.com>"
 
-l4d2 = {
+L4D2 = {
     "cC1m1_hotel": "死亡中心1旅馆",
     "c1m2_streets": "死亡中心2街道",
     "c1m3_mall": "死亡中心3购物中心",
@@ -65,4 +65,11 @@ l4d2 = {
     "c13m4_cutthroatcreek": "刺骨寒溪4残酷溪流",
     550: "L4D2",
     730: "CS:GO"
+}
+
+TOOLS = {
+
+    "https://weather.bennythink.com/": ["天气预报", "LNT", "Tornado"],
+    "https://jbls.bennythink.com/": ["JetBrains 激活器", "LNF", "Flask"],
+
 }
