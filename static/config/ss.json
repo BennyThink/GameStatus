@@ -1,0 +1,53 @@
+{
+  "column": [
+    {
+      "sortable": true,
+      "prop": "address",
+      "type": "string",
+      "label": "地址",
+      "width": ""
+    },
+    {
+      "sortable": false,
+      "prop": "method",
+      "type": "string",
+      "label": "加密方式",
+      "width": "120"
+    },
+    {
+      "sortable": false,
+      "prop": "port_pass",
+      "type": "string",
+      "label": "端口密码",
+      "width": ""
+    },
+    {
+      "sortable": false,
+      "prop": "cpu",
+      "type": "string",
+      "label": "CPU",
+      "width": "150"
+    },
+    {
+      "sortable": false,
+      "prop": "memory",
+      "type": "string",
+      "label": "内存",
+      "width": "100"
+    },
+    {
+      "sortable": false,
+      "prop": "network",
+      "type": "string",
+      "label": "流量",
+      "width": "180"
+    },
+    {
+      "sortable": false,
+      "prop": "status",
+      "type": "string",
+      "label": "状态",
+      "width": "80"
+    }
+  ]
+}

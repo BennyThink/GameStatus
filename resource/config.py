@@ -20,6 +20,6 @@ WEB = [
 ]
 
 SS = [
-    {"host": "localhost", "username": "root", "password": "", },
-    {"host": "localhost", "username": "root", "password": "", }
+    {"app_id": 3, "host": "shemissed.me", "username": "root", "password": "123456",
+     "cmd": "systemctl status shadowsocks"}
 ]

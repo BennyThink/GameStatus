@@ -14,7 +14,6 @@ import re
 import time
 
 import paramiko
-import pymongo
 
 from resource.config import WEB
 from resource.constants import TOOLS

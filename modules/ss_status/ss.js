@@ -18,20 +18,23 @@ var PageConfig = {
             }
         },
         created: function () {
-            // TODO: 好像不行，dialog会被异步渲染。要不新开一个login.html写入cookie什么的吧
             var arr, reg = new RegExp("(^| )" + 'auth' + "=([^;]*)(;|$)");
+            var cookie_pass = undefined;
             if (arr = document.cookie.match(reg))
-                console.log(arr[2]);
+                cookie_pass = arr[2];
             else
+                window.location = '/modules/ss_status/login.html';
+
+            axios.post(AjaxUrls.login, "password=" + cookie_pass).then(function (res) {
+                console.log('cookies login success')
+            }).catch(function (err) {
+                console.warn('login failed');
                 window.location = '/modules/ss_status/login.html'
+            });
+
+
         },
         methods: {
-            sendAuth: function () {
-                this.authVisible = false;
-                console.log(this.password);
-                // TODO: 请求后端，如果状态码是200那么写入cookie，否则提示错误
-                document.cookie = "auth=" + this.password
-            },
             insideChange: function (v) {
                 this.insidePage = v;
             },
@@ -43,11 +46,26 @@ var PageConfig = {
                 this.insidePage = 1;
             },
             refresh: function () {
-                app.loadData();
-                this.$message({
-                    message: '刷新成功',
-                    type: 'success'
+                app.loading = true;
+                var that = this;
+                axios.get(PageConfig.load_url + '?refresh=1').then(function (res) {
+                    app.loadData();
+                    app.loading = false;
+
+                    that.$message({
+                        message: '刷新成功',
+                        type: 'success'
+                    });
+                }).catch(function (err) {
+                    that.$message({
+                        message: '数据加载失败',
+                        type: 'error'
+                    });
+                    app.loading = false;
+                    console.log(err);
                 });
+
+
             },
             mail: function (add) {
                 window.open('mailto:benny.think@gmail.com?subject='
@@ -57,3 +75,13 @@ var PageConfig = {
         }
     }
 };
+
+function verify_again(password) {
+    axios.post(AjaxUrls.login, "password=" + password).then(function (res) {
+        return true;
+    }).catch(function (err) {
+        return false
+    });
+
+
+}

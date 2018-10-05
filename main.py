@@ -19,6 +19,7 @@ from tornado.concurrent import run_on_executor
 
 from resource.game import game_response, game_sync
 from resource.web import web_response, web_sync
+from resource.ss import ss_response, ss_sync, PassAuth
 
 
 class BaseHandler(web.RequestHandler):
@@ -70,9 +71,34 @@ class WebStatusHandler(BaseHandler):
         return web_sync()
 
 
+class SSStatusHandler(BaseHandler):
+    @staticmethod
+    def response_func():
+        return ss_response()
+
+    @staticmethod
+    def sync_func():
+        return ss_sync()
+
+
+class LoginHandler(web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
+    def post(self):
+        password = self.get_argument('password')
+        result = PassAuth('ss_auth').verify_pass(password)
+        if result:
+            self.set_status(200)
+        else:
+            self.set_status(401)
+
+
 class RunServer:
     handlers = [(r'/api/game', GameStatusHandler),
                 (r'/api/web', WebStatusHandler),
+                (r'/api/ss', SSStatusHandler),
+                (r'/api/login', LoginHandler),
                 (r"/(.*)", web.StaticFileHandler,
                  {"path": os.path.dirname(__file__), "default_filename": "index.html"})]
     application = web.Application(handlers,
@@ -108,5 +134,6 @@ if __name__ == "__main__":
 
     # scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
     # scheduler.add_job(game_sync, 'interval', minutes=10)
+    # scheduler.add_job(web_sync, 'interval', minutes=10)
     # scheduler.start()
     RunServer.run_server(port=p, host=h)
