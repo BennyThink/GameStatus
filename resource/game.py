@@ -14,11 +14,11 @@ import re
 import time
 
 import paramiko
-import pymongo
 from valve.source.a2s import ServerQuerier
 
 from resource.config import GAME
-from resource.constants import l4d2
+from resource.constants import L4D2
+from resource.database import Mongo
 
 
 class SourceServer:
@@ -50,12 +50,12 @@ class SourceServer:
             self.__server.close()
 
     def parse_info(self):
-        game = l4d2.get(self.game['app_id'])
+        game = L4D2.get(self.game['app_id'])
         name = self.game['server_name']
         h = self.__host
         address = f"{h['host']}:{h['port']}"
 
-        map_name = l4d2.get(self.game['map'].lower(), self.game['map'])
+        map_name = L4D2.get(self.game['map'].lower(), self.game['map'])
         player = f"{self.game['player_count']}/{self.game['max_players']}"
         status_msg = re.findall(self.__status_regex, self.output)[0].strip()
         status_bool = True if 'running' in status_msg else False
@@ -68,35 +68,11 @@ class SourceServer:
         return response
 
 
-class Mongo:
-    def __init__(self):
-        self.client = pymongo.MongoClient()
-        self.db = self.client['ServerStatus']
-        self.col = self.db['game_status']
-
-    def __del__(self):
-        self.client.close()
-
+class SourceMongo(Mongo):
     @staticmethod
-    def get_game():
+    def get_status():
         data = [SourceServer(i).parse_info() for i in GAME]
         return data
-
-    def insert_record(self):
-        self.col.insert_many(self.get_game())
-
-    def get_one(self, app_id):
-        data = self.col.find({"app_id": app_id}).sort("_id", -1).limit(1).next()
-        if not data['status'][0]:
-            tmp = self.col.find({"app_id": 730, "status": {"$in": [True]}}).sort("_id", -1).limit(1).next()
-            tmp['status'] = data['status']
-            data = tmp
-        # pop ObjectID
-        data.pop("_id")
-        return data
-
-    def get_many(self, id_list):
-        return [self.get_one(_id) for _id in id_list]
 
 
 def game_response():
@@ -105,13 +81,9 @@ def game_response():
         c = json.load(f)
 
     lst = [item['app_id'] for item in GAME]
-    c['data'] = Mongo().get_many(lst)
+    c['data'] = SourceMongo('game_status').get_many(lst)
     return c
 
 
-def sync_game():
-    Mongo().insert_record()
-
-
-sync_game()
-# print(game_response())
+def game_sync():
+    SourceMongo('game_status').insert_record()
