@@ -89,3 +89,4 @@ class PassAuth(Mongo):
         return pbkdf2_sha256.verify(password, h)
 
 
+PassAuth('ss_status').store_pass('123456')
