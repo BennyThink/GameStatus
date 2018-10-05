@@ -15,9 +15,9 @@ import time
 
 import paramiko
 from passlib.hash import pbkdf2_sha256
-from resource.config import SS
-from resource.constants import TOOLS
-from resource.database import Mongo
+from serverstatus.config import SS
+from serverstatus.constants import TOOLS
+from serverstatus.database import Mongo
 
 
 class SSServer:

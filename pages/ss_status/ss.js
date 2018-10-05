@@ -23,13 +23,13 @@ var PageConfig = {
             if (arr = document.cookie.match(reg))
                 cookie_pass = arr[2];
             else
-                window.location = '/modules/ss_status/login.html';
+                window.location = '../ss_status/login.html';
 
             axios.post(AjaxUrls.login, "password=" + cookie_pass).then(function (res) {
                 console.log('cookies login success')
             }).catch(function (err) {
                 console.warn('login failed');
-                window.location = '/modules/ss_status/login.html'
+                window.location = '../ss_status/login.html'
             });
 
 

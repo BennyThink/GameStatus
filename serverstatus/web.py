@@ -15,9 +15,9 @@ import time
 
 import paramiko
 
-from resource.config import WEB
-from resource.constants import TOOLS
-from resource.database import Mongo
+from serverstatus.config import WEB
+from serverstatus.constants import TOOLS
+from serverstatus.database import Mongo
 
 
 class WebServer:

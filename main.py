@@ -17,9 +17,9 @@ from concurrent.futures import ThreadPoolExecutor
 from tornado import web, ioloop, httpserver, gen, options
 from tornado.concurrent import run_on_executor
 
-from resource.game import game_response, game_sync
-from resource.web import web_response, web_sync
-from resource.ss import ss_response, ss_sync, PassAuth
+from serverstatus.game import game_response, game_sync
+from serverstatus.web import web_response, web_sync
+from serverstatus.ss import ss_response, ss_sync, PassAuth
 
 
 class BaseHandler(web.RequestHandler):

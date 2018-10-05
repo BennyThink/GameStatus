@@ -16,9 +16,9 @@ import time
 import paramiko
 from valve.source.a2s import ServerQuerier
 
-from resource.config import GAME
-from resource.constants import L4D2
-from resource.database import Mongo
+from serverstatus.config import GAME
+from serverstatus.constants import L4D2
+from serverstatus.database import Mongo
 
 
 class SourceServer:
