@@ -78,9 +78,10 @@
                     <template scope="scope">
 
                         <div v-if="column.prop=='status'">
-                            <el-tooltip :content="scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
-                            :'服务器已停止运行：\n'+scope.row.status[1]" placement="top">
-
+                            <el-tooltip placement="top">
+                                <div slot="content">{{scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
+                                    :'服务器已停止运行：\n'+scope.row.status[1]}}<br>更新时间：{{scope.row.status[2]}}
+                                </div>
                                 <el-switch
                                         v-model="scope.row.status[0]"
                                         active-color="#13ce66"

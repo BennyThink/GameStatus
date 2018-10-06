@@ -148,6 +148,6 @@ if __name__ == "__main__":
     scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
     scheduler.add_job(game_sync, 'interval', minutes=10)
     scheduler.add_job(web_sync, 'interval', minutes=10)
-    scheduler.add_job(ss_sync, 'interval', minutes=10)
+    scheduler.add_job(ss_sync, 'interval', minutes=60)
     scheduler.start()
     RunServer.run_server(port=p, host=h)

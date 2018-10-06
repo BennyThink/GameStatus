@@ -12,6 +12,8 @@ import logging
 import os
 import re
 import time
+import sys
+import base64
 
 import paramiko
 from passlib.hash import pbkdf2_sha256
@@ -53,8 +55,7 @@ class SSServer:
         port_pass = [{"port": k, "password": v} for k, v in ss_config.get('port_password').items()]
 
         response = dict(app_id=self.__config['app_id'], address=address, method=method, port_pass=port_pass,
-                        cpu=cpu, memory=memory, network=network, status=[status_bool, status_msg],
-                        timestamp=time.time())
+                        cpu=cpu, memory=memory, network=network, status=[status_bool, status_msg, time.time()])
         return response
 
 
@@ -88,5 +89,15 @@ class PassAuth(Mongo):
         h = self.col.find().next()['password']
         return pbkdf2_sha256.verify(password, h)
 
+    def clear_password(self):
+        self.col.delete_many({})
 
-PassAuth('ss_auth').store_pass('123456')
+
+if __name__ == '__main__':
+    if len(sys.argv) == 2:
+        PassAuth('ss_auth').store_pass(sys.argv[1])
+    else:
+        print('No password provided, generate random password...')
+        rand = base64.b64encode(os.urandom(16)).decode('utf-8')
+        PassAuth('ss_auth').store_pass(rand)
+        print(f'You password is {rand}')

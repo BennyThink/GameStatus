@@ -63,8 +63,7 @@ class SourceServer:
         memory = re.findall(self.__memory_regex, self.output)[0].strip() if status_bool else 0
 
         response = dict(app_id=self.__host['app_id'], game=game, name=name, address=address, map=map_name,
-                        player=player,
-                        cpu=cpu, memory=memory, status=[status_bool, status_msg], timestamp=time.time())
+                        player=player, cpu=cpu, memory=memory, status=[status_bool, status_msg, time.time()])
         return response
 
 

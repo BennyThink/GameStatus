@@ -7,6 +7,8 @@
 
 __author__ = "Benny <benny@bennythink.com>"
 
+import time
+
 import pymongo
 
 
@@ -28,6 +30,8 @@ class Mongo:
 
     def get_one(self, app_id):
         data = self.col.find({"app_id": app_id}).sort("_id", -1).limit(1).next()
+        data['status'][2] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data['status'][2]))
+
         if not data['status'][0]:
             tmp = self.col.find({"app_id": app_id, "status": {"$in": [True]}}).sort("_id", -1).limit(1).next()
             tmp['status'] = data['status']

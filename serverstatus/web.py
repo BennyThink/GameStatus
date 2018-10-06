@@ -49,7 +49,7 @@ class WebServer:
         arch = TOOLS.get(address)[1]
         app = TOOLS.get(address)[2]
         response = dict(app_id=self.__config['app_id'], address=address, name=name, arch=arch,
-                        app=app, cpu=cpu, memory=memory, status=[status_bool, status_msg], timestamp=time.time())
+                        app=app, cpu=cpu, memory=memory, status=[status_bool, status_msg, time.time()])
         return response
 
 
@@ -72,5 +72,3 @@ def web_response():
 
 def web_sync():
     WebMongo('web_status').insert_record()
-
-

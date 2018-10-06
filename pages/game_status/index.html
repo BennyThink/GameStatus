@@ -22,7 +22,7 @@
         <div class="title" v-html="sys_title"></div>
         <a class="menu-toggle fw-toggle fa fa-bars" @click="menu_collapse=!menu_collapse"></a>
     </el-header>
-    <el-container >
+    <el-container>
         <el-menu
                 ref="menu"
                 class="el-aside fw-menu"
@@ -88,8 +88,10 @@
                             <span v-html="scope.row.player"></span>
                         </div>
                         <div v-else-if="column.prop=='status'">
-                            <el-tooltip :content="scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
-                            :'服务器已停止运行：\n'+scope.row.status[1]" placement="top">
+                            <el-tooltip placement="top">
+                                <div slot="content">{{scope.row.status[0]?'服务器运行中：'+scope.row.status[1]
+                                    :'服务器已停止运行：\n'+scope.row.status[1]}}<br>更新时间：{{scope.row.status[2]}}
+                                </div>
 
                                 <el-switch
                                         v-model="scope.row.status[0]"
