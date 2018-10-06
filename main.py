@@ -64,6 +64,27 @@ class BaseHandler(web.RequestHandler):
         self.write(res)
 
 
+class LoginHandler(web.RequestHandler):
+
+    def data_received(self, chunk):
+        pass
+
+    def post(self):
+        password = self.get_argument('password')
+        result = PassAuth('ss_auth').verify_pass(password)
+        if result:
+            self.set_status(200)
+        else:
+            self.set_status(401)
+
+    def get(self):
+        self.post()
+
+    def authentication(self):
+        self.post()
+        return self.get_status()
+
+
 class GameStatusHandler(BaseHandler):
     @staticmethod
     def response_func():
@@ -84,27 +105,18 @@ class WebStatusHandler(BaseHandler):
         return web_sync()
 
 
-class SSStatusHandler(BaseHandler):
-    @staticmethod
-    def response_func():
-        return ss_response()
-
-    @staticmethod
-    def sync_func():
-        return ss_sync()
-
-
-class LoginHandler(web.RequestHandler):
-    def data_received(self, chunk):
-        pass
-
-    def post(self):
-        password = self.get_argument('password')
-        result = PassAuth('ss_auth').verify_pass(password)
-        if result:
-            self.set_status(200)
+class SSStatusHandler(BaseHandler, LoginHandler):
+    def my_auth(self, func):
+        if self.authentication() == 200:
+            return func()
         else:
             self.set_status(401)
+
+    def response_func(self):
+        return self.my_auth(ss_response)
+
+    def sync_func(self):
+        return self.my_auth(ss_sync)
 
 
 class RunServer:

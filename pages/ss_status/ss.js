@@ -21,7 +21,7 @@ var PageConfig = {
             var arr, reg = new RegExp("(^| )" + 'auth' + "=([^;]*)(;|$)");
             var cookie_pass = undefined;
             if (arr = document.cookie.match(reg))
-                cookie_pass = arr[2];
+                this.auth = cookie_pass = arr[2];
             else
                 window.location = '../ss_status/login.html';
 
