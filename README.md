@@ -51,9 +51,9 @@ If you do need authentication mechanism, please add auth credentials in `servers
 Simply you have to replace `host`, `username`, `password` and `cmd`.
 Each variables' format shall not be changed and `app_id` is very important to source engine games.
 
-5. [Optional] If you need Shadowsocks status, open `serverstatus/ss.py` and scroll down. 
-Replace `123456` with your own complicated password and run this script immediately.
-However, if this script hasn't been run once, no password is permitted when prompt login to Shadowsocks status.
+5. [Optional] If you need Shadowsocks status, execute `python serverstatus/ss.py 123456` 
+Replace `123456` with your own complicated password. If no password is provided, it would generate a random secure password.
+However, if this script has not been run once, no password is permitted when prompt login to Shadowsocks status.
 
 6. Run `python /path/to/project/main.py`. Wait a few minutes for cron job execution. You could observe the output when it's complete.
 By default, this server listens on localhost:8888, to change it, simply use command line arguments,

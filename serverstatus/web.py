@@ -7,48 +7,24 @@
 
 __author__ = "Benny <benny@bennythink.com>"
 
-import json
-import logging
-import os
-import re
 import time
-
-import paramiko
-
 from serverstatus.config import WEB
 from serverstatus.constants import TOOLS
-from serverstatus.database import Mongo
+from serverstatus.utils import Mongo, BaseSSH, template
 
 
-class WebServer:
-    def __init__(self, conf):
-        self.__status_regex = re.compile(r'Active:(.*)', re.IGNORECASE)
-        self.__memory_regex = re.compile(r'Memory:(.*)', re.IGNORECASE)
-        self.__cpu_regex = re.compile(r'CPU:(.*)', re.IGNORECASE)
-        self.__config = conf
-
-        self.__ssh = paramiko.SSHClient()
-        self.__ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-
-        self.__ssh.connect(conf['host'], username=conf['username'], password=conf['password'])
-        _, stdout, _ = self.__ssh.exec_command(conf['cmd'])
-        self.output: str = stdout.read().decode('utf-8')
-
-    def __del__(self):
-        self.__ssh.close()
+class WebServer(BaseSSH):
 
     def parse_info(self):
-        h = self.__config
+        h = self.config
         address = f"https://{h['host']}/"
-        status_msg = re.findall(self.__status_regex, self.output)[0].strip()
-        status_bool = True if 'running' in status_msg else False
-        cpu = re.findall(self.__cpu_regex, self.output)[0].strip()
-        memory = re.findall(self.__memory_regex, self.output)[0].strip() if status_bool else 0
+
+        cpu, memory, _, status_bool, status_msg = self.systemd_info()
 
         name = TOOLS.get(address)[0]
         arch = TOOLS.get(address)[1]
         app = TOOLS.get(address)[2]
-        response = dict(app_id=self.__config['app_id'], address=address, name=name, arch=arch,
+        response = dict(app_id=self.config['app_id'], address=address, name=name, arch=arch,
                         app=app, cpu=cpu, memory=memory, status=[status_bool, status_msg, time.time()])
         return response
 
@@ -61,11 +37,7 @@ class WebMongo(Mongo):
 
 
 def web_response():
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'config', 'web.json')
-    with open(path, encoding='utf-8') as f:
-        c = json.load(f)
-
-    lst = [item['app_id'] for item in WEB]
+    c, lst = template('web')
     c['data'] = WebMongo('web_status').get_many(lst)
     return c
 

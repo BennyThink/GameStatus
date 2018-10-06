@@ -8,47 +8,35 @@
 __author__ = "Benny <benny@bennythink.com>"
 
 import json
-import logging
 import os
-import re
 import time
 import sys
 import base64
 
-import paramiko
 from passlib.hash import pbkdf2_sha256
-from serverstatus.config import SS
-from serverstatus.constants import TOOLS
-from serverstatus.database import Mongo
+
+# oh well then...
+try:
+    import serverstatus
+except ModuleNotFoundError:
+    sys.path.append('.')
+    sys.path.append('..')
+finally:
+    from serverstatus.config import SS
+    from serverstatus.utils import Mongo, BaseSSH, template
 
 
-class SSServer:
+class SSServer(BaseSSH):
     def __init__(self, conf):
-        self.__status_regex = re.compile(r'Active:(.*)', re.IGNORECASE)
-        self.__memory_regex = re.compile(r'Memory:(.*)', re.IGNORECASE)
-        self.__cpu_regex = re.compile(r'CPU:(.*)', re.IGNORECASE)
-        self.__ip_regex = re.compile(r'IP:(.*)', re.IGNORECASE)
+        super().__init__(conf)
         self.__config = conf
-
-        self.__ssh = paramiko.SSHClient()
-        self.__ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy)
-
-        self.__ssh.connect(conf['host'], username=conf['username'], password=conf['password'])
-        _, stdout, _ = self.__ssh.exec_command(conf['cmd'])
-        self.output: str = stdout.read().decode('utf-8')
-
-    def __del__(self):
-        self.__ssh.close()
 
     def parse_info(self):
         address = self.__config['host']
-        status_msg = re.findall(self.__status_regex, self.output)[0].strip()
-        status_bool = True if 'running' in status_msg else False
-        cpu = re.findall(self.__cpu_regex, self.output)[0].strip()
-        memory = re.findall(self.__memory_regex, self.output)[0].strip() if status_bool else 0
-        network = re.findall(self.__ip_regex, self.output)[0].strip()
 
-        _, out, _ = self.__ssh.exec_command('cat /etc/shadowsocks-go/config.json')
+        cpu, memory, network, status_bool, status_msg = self.systemd_info()
+
+        _, out, _ = self.ssh.exec_command('cat /etc/shadowsocks-go/config.json')
         ss_config: dict = json.loads(out.read().decode('utf-8'))
 
         method = ss_config.get('method')
@@ -67,11 +55,7 @@ class SSMongo(Mongo):
 
 
 def ss_response():
-    path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'config', 'ss.json')
-    with open(path, encoding='utf-8') as f:
-        c = json.load(f)
-
-    lst = [item['app_id'] for item in SS]
+    c, lst = template('ss')
     c['data'] = SSMongo('ss_status').get_many(lst)
     return c
 
