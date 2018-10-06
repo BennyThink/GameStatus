@@ -48,7 +48,7 @@ var PageConfig = {
             refresh: function () {
                 app.loading = true;
                 var that = this;
-                axios.get(PageConfig.load_url + '?refresh=1').then(function (res) {
+                axios.get(PageConfig.load_url + '&refresh=1').then(function (res) {
                     app.loadData();
                     app.loading = false;
 

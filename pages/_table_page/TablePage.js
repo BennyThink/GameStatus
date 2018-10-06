@@ -57,7 +57,13 @@ var _defaultConfig = {
         }
         this.paginationHeight = parseInt(this.$refs.paginationRef.$el.clientHeight);
     },
+    created: function () {
+        setInterval(this.timer, 1000 * 600);
+    },
     methods: {
+        timer: function () {
+            this.reloadData();
+        },
         //////////////////////////////////////////////////////init//////////////////////////////////////////////////////
         /**
          * 重新加载数据，直接从服务器取
@@ -74,7 +80,7 @@ var _defaultConfig = {
             //配置
             let result = {};
             let that = this;
-            if (this.menu_index === 'ss_status')
+            if (this.menu_index === 'ss_status' &&  PageConfig.load_url.indexOf('password')===-1)
                 PageConfig.load_url = PageConfig.load_url + '?password=' + this.auth;
             axios.get(PageConfig.load_url).then(function (res) {
                 //that.loading = false;
