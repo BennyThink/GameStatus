@@ -27,23 +27,30 @@ server {
     add_header Content-Security-Policy "default-src https: 'unsafe-inline' 'unsafe-eval' data:;";
     add_header Referrer-Policy "no-referrer-when-downgrade";
 
-    location ~ .*\.(gif|jpg|jpeg|png|bmp|swf)$
-    {
-        expires      30d;
+
+    location ^~ /static/ {
+        # what??
+        root /var/www;
+        if ($query_string) {
+            expires max;
+        }
+    }
+    location = /favicon.ico {
+        rewrite (.*) /static/favicon.ico;
     }
 
-    location ~ .*\.(js|css|otf|eot|svg|ttf|woff|woff2)?$
-    {
-        expires      5d;
+    location / {
+        proxy_pass_header Server;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Scheme $scheme;
+        proxy_pass http://127.0.0.1:8888; # 对应端口号的Python应用
     }
 
     location /nginx_status {
         stub_status on;
         access_log off;
-    }
-
-    location / {
-        proxy_pass http://127.0.0.1:8888; # 对应端口号的Python应用
     }
 
 

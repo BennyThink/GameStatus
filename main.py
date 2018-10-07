@@ -64,6 +64,11 @@ class BaseHandler(web.RequestHandler):
         self.write(res)
 
 
+class IndexHandler(BaseHandler):
+    def get(self):
+        self.render("pages/index.html")
+
+
 class LoginHandler(web.RequestHandler):
 
     def data_received(self, chunk):
@@ -120,16 +125,25 @@ class SSStatusHandler(BaseHandler, LoginHandler):
 
 
 class RunServer:
-    handlers = [(r'/api/game', GameStatusHandler),
+    root_path = os.path.dirname(__file__)
+    page_path = os.path.join(root_path, 'pages')
+
+    handlers = [(r'/', IndexHandler),
+                (r'/api/game', GameStatusHandler),
                 (r'/api/web', WebStatusHandler),
                 (r'/api/ss', SSStatusHandler),
                 (r'/api/login', LoginHandler),
-                (r"/(.*)", web.StaticFileHandler,
-                 {"path": os.path.dirname(__file__), "default_filename": "index.html"})]
-    application = web.Application(handlers,
-                                  static_path=os.path.join(os.path.dirname(__file__), "static"),
-                                  debug=True
-                                  )
+                (r'/static/(.*)', web.StaticFileHandler, {'path': root_path}),
+                (r'/pages/(.*\.html|.*\.js|.*\.css|.*\.png|.*\.jpg)', web.StaticFileHandler, {'path': page_path}),
+                ]
+    settings = {
+        "static_path": os.path.join(root_path, "static"),
+        "cookie_secret": "5Li05DtnQewDZqpmDVB3HAAhFqUu2vDnUSnqezkeu+M=",
+        "xsrf_cookies": True,
+        "autoreload": True
+    }
+
+    application = web.Application(handlers, **settings)
 
     @staticmethod
     def run_server(port=8888, host='127.0.0.1', **kwargs):
