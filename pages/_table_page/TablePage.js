@@ -20,7 +20,7 @@ var _defaultConfig = {
         toolbarHeight: '',
         paginationHeight: '',
         tableHight: -1,
-
+        status_code: 400,
         menu_collapse: false,
         menus: [
             {
@@ -80,13 +80,13 @@ var _defaultConfig = {
             //配置
             let result = {};
             let that = this;
-            if (this.menu_index === 'ss_status' &&  PageConfig.load_url.indexOf('password')===-1)
-                PageConfig.load_url = PageConfig.load_url + '?password=' + this.auth;
+
             axios.get(PageConfig.load_url).then(function (res) {
                 //that.loading = false;
                 result['column'] = res.data.column;
                 result['data'] = res.data.data;
                 that.parseResult(result);
+                that.status_code = 200;
             }).catch(function (err) {
                 that.loading = false;
                 that.$message({
@@ -94,6 +94,7 @@ var _defaultConfig = {
                     type: 'error'
                 });
                 console.log(err);
+                that.status_code = err.response.status;
             });
 
         },
@@ -566,3 +567,7 @@ function z_each(list, func) {
     })
 }
 
+function getCookie(name) {
+    var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+    return c ? c[1] : undefined;
+}

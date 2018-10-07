@@ -55,13 +55,18 @@ class BaseHandler(web.RequestHandler):
 
     @gen.coroutine
     def get(self):
-        args = self.get_query_arguments('refresh')
-        if args:
-            self.sync_func()
+        if not self.get_cookie('_xsrf'):
+            self.set_cookie('_xsrf', self.xsrf_token.decode('utf-8'), expires_days=7)
         self.set_header("Content-Type", "application/json")
         res = yield self.run_request()
 
         self.write(res)
+
+    @gen.coroutine
+    def post(self):
+        args = self.get_argument('refresh')
+        if args:
+            self.sync_func()
 
 
 class IndexHandler(BaseHandler):
@@ -79,15 +84,9 @@ class LoginHandler(web.RequestHandler):
         result = PassAuth('ss_auth').verify_pass(password)
         if result:
             self.set_status(200)
+            self.set_secure_cookie('password', password, expires_days=30)
         else:
             self.set_status(401)
-
-    def get(self):
-        self.post()
-
-    def authentication(self):
-        self.post()
-        return self.get_status()
 
 
 class GameStatusHandler(BaseHandler):
@@ -110,18 +109,26 @@ class WebStatusHandler(BaseHandler):
         return web_sync()
 
 
-class SSStatusHandler(BaseHandler, LoginHandler):
-    def my_auth(self, func):
-        if self.authentication() == 200:
+class SSStatusHandler(BaseHandler):
+
+    def response_func(self):
+        return self.authentication(ss_response)
+
+    def sync_func(self):
+        return self.authentication(ss_sync)
+
+    # @web.authenticated
+    def authentication(self, func):
+        try:
+            password = self.get_secure_cookie('password').decode('utf-8')
+            result = PassAuth('ss_auth').verify_pass(password)
+        except AttributeError:
+            result = False
+
+        if result:
             return func()
         else:
             self.set_status(401)
-
-    def response_func(self):
-        return self.my_auth(ss_response)
-
-    def sync_func(self):
-        return self.my_auth(ss_sync)
 
 
 class RunServer:

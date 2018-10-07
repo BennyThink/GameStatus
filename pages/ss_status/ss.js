@@ -8,8 +8,6 @@ var PageConfig = {
             insidePage: 1,
             inner_data_length: 0,
             inner_table_data: [],
-            password: '',
-            auth: ''
         },
         computed: {
             calTableHeight: function () {
@@ -17,22 +15,19 @@ var PageConfig = {
                 return this.tableHeight
             }
         },
-        created: function () {
-            var arr, reg = new RegExp("(^| )" + 'auth' + "=([^;]*)(;|$)");
-            var cookie_pass = undefined;
-            if (arr = document.cookie.match(reg))
-                this.auth = cookie_pass = arr[2];
-            else
-                window.location = '../ss_status/login.html';
+        watch: {
+            status_code: function (val) {
+                if (val !== 200) {
+                    this.$message({
+                        message: '登录信息已失效，即将跳转登录...',
+                        type: 'info'
+                    });
+                    setTimeout(function () {
+                        window.location = '../ss_status/login.html'
+                    }, 1500);
 
-            axios.post(AjaxUrls.login, "password=" + cookie_pass).then(function (res) {
-                console.log('cookies login success')
-            }).catch(function (err) {
-                console.warn('login failed');
-                window.location = '../ss_status/login.html'
-            });
-
-
+                }
+            }
         },
         methods: {
             insideChange: function (v) {
@@ -48,7 +43,7 @@ var PageConfig = {
             refresh: function () {
                 app.loading = true;
                 var that = this;
-                axios.get(PageConfig.load_url + '&refresh=1').then(function (res) {
+                axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
                     app.loadData();
                     app.loading = false;
 
