@@ -27,7 +27,7 @@
       "prop": "map",
       "type": "string",
       "label": "地图",
-      "width": "170"
+      "width": "160"
     },
     {
       "sortable": false,
@@ -41,7 +41,7 @@
       "prop": "cpu",
       "type": "string",
       "label": "CPU",
-      "width": "140"
+      "width": "145"
     },
     {
       "sortable": false,
