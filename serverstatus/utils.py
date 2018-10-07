@@ -72,9 +72,16 @@ class BaseSSH:
     def systemd_info(self):
         status_msg = re.findall(self.__status_regex, self.output)[0].strip()
         status_bool = True if 'running' in status_msg else False
-        cpu = re.findall(self.__cpu_regex, self.output)[0].strip()
-        memory = re.findall(self.__memory_regex, self.output)[0].strip() if status_bool else 0
-        network = re.findall(self.__ip_regex, self.output)[0].strip()
+        # CPU, memory and network account may not work for older version of systemd.
+        result = re.search(self.__cpu_regex, self.output)
+        cpu = result.group(1).strip() if result else 'N/A'
+
+        result = re.search(self.__memory_regex, self.output) if status_bool else 0
+        memory = result.group(1).strip() if result else 'N/A'
+
+        result = re.search(self.__ip_regex, self.output)
+        network = result.group(1).strip() if result else 'N/A'
+
         return cpu, memory, network, status_bool, status_msg
 
 
