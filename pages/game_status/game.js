@@ -8,14 +8,14 @@ var PageConfig = {
         },
         computed: {
             calTableHeight: function () {
-                this.tableHeight = window.innerHeight - this.headerHeight - this.toolbarHeight - this.paginationHeight - 140
+                this.tableHeight = window.innerHeight - this.headerHeight - this.toolbarHeight - this.paginationHeight - 140;
                 return this.tableHeight
             }
         },
         methods: {
             refresh: function () {
                 app.loading = true;
-                var that = this;
+                let that = this;
                 axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
                     app.loadData();
                     app.loading = false;
@@ -36,7 +36,6 @@ var PageConfig = {
 
             },
             addGame: function (add) {
-                // console.log(add);
                 //steam://rungameid/550 +connect game.bennythink.com:27020
                 this.$message({
                     message: '游戏加入尚未实现',

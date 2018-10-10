@@ -7,7 +7,7 @@
 
 __author__ = "Benny <benny@bennythink.com>"
 
-GAME = [{"app_id": 550, "host": "game.bennythink.com", "port": 27021, "username": "root",
+GAME = [{"app_id": 550, "host": "game.bennythink.com", "port": 27020, "username": "root",
          "password": "123456", "cmd": "systemctl status l4d2"},
         {"app_id": 730, "host": "game.bennythink.com", "port": 27015, "username": "root",
          "password": "123456", "cmd": "systemctl status csgo"},

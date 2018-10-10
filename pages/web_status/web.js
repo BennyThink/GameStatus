@@ -35,7 +35,6 @@ var PageConfig = {
 
             },
             mail: function (add) {
-                console.log(add)
                 window.open('mailto:benny.think@gmail.com?subject='
                     + add.row.name + ': ' + add.row.address + ' 反馈' + '&body=Hi Benny,\n')
             }

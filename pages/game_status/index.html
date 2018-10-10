@@ -19,15 +19,15 @@
 
     <el-header ref="headerRef" class="fw-header ">
         <div class="fw-logo"></div>
-        <div class="title" v-html="sys_title"></div>
-        <a class="menu-toggle fw-toggle fa fa-bars" @click="menu_collapse=!menu_collapse"></a>
+        <div class="title" v-html="sysTitle"></div>
+        <a class="menu-toggle fw-toggle fa fa-bars" @click="menuCollapse=!menuCollapse"></a>
     </el-header>
     <el-container>
         <el-menu
                 ref="menu"
                 class="el-aside fw-menu"
                 :default-active="menu_index"
-                :collapse="menu_collapse">
+                :collapse="menuCollapse">
             <a v-for="item in menus" :href="item.url">
                 <el-menu-item :index="item.index">
                     <i class="fa" :class="item.font_icon"></i>
@@ -44,12 +44,12 @@
 
                 <div style="float: right;display: inline-block;">
                     <el-input id="filterInput"
-                              @keydown.esc.native="text_filter='';updateTableData()"
-                              @change="updateTableData()"
+                              @keydown.esc.native="textFilter='';updateTableData()"
+                              @input="searchTable()"
                               placeholder="搜索"
                               prefix-icon="el-icon-search"
                               size="small"
-                              v-model="text_filter"
+                              v-model="textFilter"
                               clearable
                               autofocus>
                     </el-input>
@@ -58,9 +58,7 @@
             <el-table id="gridDiv"
                       ref="dataTable"
                       class="pj-table"
-                      :data="table_data"
-                      @sort-change="handleSortChange"
-                      @selection-change="handleSelectChange"
+                      :data="tableData"
                       stripe
                       border
                       :height="calTableHeight">
@@ -72,7 +70,7 @@
                 </el-table-column>
 
 
-                <el-table-column v-for="column in table_columns" :label="column.label" :prop="column.prop"
+                <el-table-column v-for="column in tableColumns" :label="column.label" :prop="column.prop"
                                  :fixed="column.fixed" :sortable="column.sortable" :width="column.width"
                 >
                     <template scope="scope">
@@ -135,10 +133,10 @@
                     class="pj-pagination"
                     @size-change="handlePageSizeChange"
                     @current-change="handlePageCurrentChange"
-                    :page-sizes="table_page.sizes"
-                    :page-size="table_page.size"
-                    :layout="table_page.layout"
-                    :total="table_data_count"
+                    :page-sizes="tablePage.sizes"
+                    :page-size="tablePage.size"
+                    :layout="tablePage.layout"
+                    :total="totalDataCount"
                     background>
             </el-pagination>
         </el-main>
@@ -150,5 +148,5 @@
 </body>
 
 <script src="game.js" async></script>
-<script src="../_table_page/TablePage.js" async></script>
+<script src="../tablePage/page.js" async></script>
 </html>

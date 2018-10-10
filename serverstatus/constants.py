@@ -8,7 +8,7 @@
 __author__ = "Benny <benny@bennythink.com>"
 
 L4D2 = {
-    "cC1m1_hotel": "死亡中心1旅馆",
+    "c1m1_hotel": "死亡中心1旅馆",
     "c1m2_streets": "死亡中心2街道",
     "c1m3_mall": "死亡中心3购物中心",
     "c1m4_atrium": "死亡中心4中厅",

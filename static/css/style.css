@@ -6,8 +6,8 @@ body {
 }
 
 .fw-header {
-    background: #438eb9;
-    border-bottom: 1px solid #0079aa;
+    background: #009966;
+    border-bottom: 1px solid #277a5f;
     color: #FFFFFF;
     height: 46px !important;
     padding: 0 12px;
@@ -18,28 +18,21 @@ body {
     cursor: pointer;
     color: #FFFFFF;
     padding: 15px 12px;
-}
-
-.fw-header .menu-toggle {
     vertical-align: top;
 }
 
 .fw-header .menu-toggle:hover {
-    background-color: #367fa9;
-}
-
-.fw-header .menu-toggle:hover {
-    background-color: #367fa9;
+    background-color: #277a5f;
 }
 
 .fw-header .title {
     display: inline-block;
-    background-color: #367fa9;
+    background-color: #277a5f;
     font-size: 20px;
     height: 100%;
     vertical-align: top;
     line-height: 50px;
-    padding: 0px 16px;
+    padding: 0 16px;
 }
 
 .fw-menu a {
@@ -88,37 +81,12 @@ body {
     background: #f5f7fa;
 }
 
-.pj-toolbar .el-select .el-input {
-    width: 130px;
-}
-
-.pj-toolbar .el-select .el-input input {
-    height: 2.3em;
-}
-
 .pj-toolbar .el-input {
     width: 220px;
 }
 
 .pj-toolbar .el-input input {
     height: 2.35em;
-}
-
-.pj-toolbar .el-button,
-.pj-toolbar .el-checkbox {
-    margin-right: 8px;
-}
-
-.pj-toolbar .el-checkbox + .el-checkbox {
-    margin-left: 8px;
-}
-
-.pj-toolbar .file-upload {
-    display: inline-block;
-}
-
-.init-v-hidden {
-    visibility: hidden;
 }
 
 .fw-header .title {
@@ -142,9 +110,4 @@ body {
     width: 100%;
     height: 100%;
     position: relative
-}
-
-._p-filter-matched {
-    background-color: #ff0;
-    color: #000
 }

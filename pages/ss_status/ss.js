@@ -1,10 +1,9 @@
-var PageConfig = {
+let PageConfig = {
     title: "影梭服务器状态",
     load_url: AjaxUrls.ss_status,
     eui: {
         data: {
             menu_index: "ss_status",
-            filter: {},
             insidePage: 1,
             inner_data_length: 0,
             inner_table_data: [],
@@ -70,13 +69,3 @@ var PageConfig = {
         }
     }
 };
-
-function verify_again(password) {
-    axios.post(AjaxUrls.login, "password=" + password).then(function (res) {
-        return true;
-    }).catch(function (err) {
-        return false
-    });
-
-
-}

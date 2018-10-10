@@ -19,7 +19,7 @@
 
     <el-header ref="headerRef" class="fw-header ">
         <div class="fw-logo"></div>
-        <div class="title" v-html="sys_title"></div>
+        <div class="title" v-html="sysTitle"></div>
     </el-header>
 
     <div class="login-box">
@@ -59,11 +59,11 @@
         el: '#app',
         data: {
             password: '',
-            sys_title: '影梭状态 - 登录'
+            sysTitle: '影梭状态 - 登录'
 
         },
         created: function () {
-            document.getElementsByTagName('title')[0].innerText = this.sys_title;
+            document.getElementsByTagName('title')[0].innerText = this.sysTitle;
         },
 
         methods: {
@@ -100,7 +100,7 @@
     });
 
     function getCookie(name) {
-        var c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
+        let c = document.cookie.match("\\b" + name + "=([^;]*)\\b");
         return c ? c[1] : undefined;
     }
 </script>
