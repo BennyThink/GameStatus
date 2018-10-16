@@ -56,7 +56,7 @@ class BaseHandler(web.RequestHandler):
     @gen.coroutine
     def get(self):
         if not self.get_cookie('_xsrf'):
-            self.set_cookie('_xsrf', self.xsrf_token.decode('utf-8'), expires_days=7)
+            self.set_cookie('_xsrf', self.xsrf_token, expires_days=7)
         self.set_header("Content-Type", "application/json")
         res = yield self.run_request()
 
@@ -84,7 +84,7 @@ class LoginHandler(web.RequestHandler):
         result = PassAuth('ss_auth').verify_pass(password)
         if result:
             self.set_status(200)
-            self.set_secure_cookie('password', password, expires_days=30)
+            self.set_secure_cookie('password', password, expires_days=30, httponly=True)
         else:
             self.set_status(401)
 
