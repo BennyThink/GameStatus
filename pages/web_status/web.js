@@ -1,10 +1,9 @@
-var PageConfig = {
+let PageConfig = {
     title: "网站服务器状态",
     load_url: AjaxUrls.web_status,
     eui: {
         data: {
             menu_index: "web_status",
-            filter: {},
         },
         computed: {
             calTableHeight: function () {
@@ -15,7 +14,7 @@ var PageConfig = {
         methods: {
             refresh: function () {
                 app.loading = true;
-                var that = this;
+                let that = this;
                 axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
                     app.loadData();
                     app.loading = false;

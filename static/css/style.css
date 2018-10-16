@@ -26,13 +26,15 @@ body {
 }
 
 .fw-header .title {
+    color:white;
+    text-decoration: none;
     display: inline-block;
-    background-color: #277a5f;
+    background-color: transparent;
     font-size: 20px;
     height: 100%;
     vertical-align: top;
-    line-height: 50px;
-    padding: 0 16px;
+    line-height: 45px;
+    padding: 0;
 }
 
 .fw-menu a {
@@ -87,12 +89,6 @@ body {
 
 .pj-toolbar .el-input input {
     height: 2.35em;
-}
-
-.fw-header .title {
-    background-color: transparent;
-    line-height: 45px;
-    padding: 0;
 }
 
 .fw-header .fw-logo {

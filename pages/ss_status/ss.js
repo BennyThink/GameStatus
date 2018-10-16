@@ -41,7 +41,7 @@ let PageConfig = {
             },
             refresh: function () {
                 app.loading = true;
-                var that = this;
+                let that = this;
                 axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
                     app.loadData();
                     app.loading = false;

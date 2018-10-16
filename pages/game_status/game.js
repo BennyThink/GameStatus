@@ -1,10 +1,9 @@
-var PageConfig = {
+let PageConfig = {
     title: "游戏服务器状态",
     load_url: AjaxUrls.game_status,
     eui: {
         data: {
             menu_index: "game_status",
-            filter: {},
         },
         computed: {
             calTableHeight: function () {
