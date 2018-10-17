@@ -24,19 +24,14 @@ class SourceServer(BaseSSH):
 
     def __init__(self, conf):
         # valve server maybe inactive
-        super().__init__(conf)
         self.__host = conf
-        try:
-            self.__server = ServerQuerier((conf['host'], conf['port']))
-            self.game = self.__server.info().values
-        except Exception as e:
-            logging.warning(e)
-            self.game = {'server_name': None, 'map': '', 'game': None, 'app_id': None, 'player_count': None,
-                         'max_players': None}
+
+        self.__server = ServerQuerier((conf['host'], conf['port']))
+        self.game = self.__server.info().values
+        super().__init__(conf)
 
     def __del__(self):
-        self.ssh.close()
-        if self.game['game']:
+        if self.__server:
             self.__server.close()
 
     def parse_info(self):
@@ -73,6 +68,7 @@ class SourceMongo(Mongo):
 def game_response():
     c, lst = template('game')
     c['data'] = SourceMongo('game_status').get_many(lst)
+    c['meta'] = {'count': len(c['data'])}
     return c
 
 

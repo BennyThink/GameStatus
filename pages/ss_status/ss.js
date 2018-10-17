@@ -51,12 +51,14 @@ let PageConfig = {
                         type: 'success'
                     });
                 }).catch(function (err) {
+                    let msg = err.response ? err.response.data.message : err.message;
+                    let error = err.response ? err.response : err.request;
                     that.$message({
-                        message: '数据加载失败',
+                        message: msg,
                         type: 'error'
                     });
                     app.loading = false;
-                    console.log(err);
+                    console.error(error);
                 });
 
 

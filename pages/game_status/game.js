@@ -18,18 +18,19 @@ let PageConfig = {
                 axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
                     app.loadData();
                     app.loading = false;
-
                     that.$message({
                         message: '刷新成功',
                         type: 'success'
                     });
                 }).catch(function (err) {
+                    let msg = err.response ? err.response.data.message : err.message;
+                    let error = err.response ? err.response : err.request;
                     that.$message({
-                        message: '数据加载失败',
+                        message: msg,
                         type: 'error'
                     });
                     app.loading = false;
-                    console.log(err);
+                    console.error(error);
                 });
 
 

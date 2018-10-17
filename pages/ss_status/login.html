@@ -89,10 +89,13 @@
                     }, 1500);
 
                 }).catch(function (err) {
+                    let msg = err.response ? err.response.data.message : err.message;
+                    let error = err.response ? err.response : err.request;
                     that.$message({
-                        message: '密码错误！',
+                        message: msg,
                         type: 'error'
                     });
+                    console.error(error);
 
                 });
 

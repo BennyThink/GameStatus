@@ -57,6 +57,7 @@ class SSMongo(Mongo):
 def ss_response():
     c, lst = template('ss')
     c['data'] = SSMongo('ss_status').get_many(lst)
+    c['meta'] = {'count': len(c['data'])}
     return c
 
 
@@ -66,6 +67,7 @@ def ss_sync():
 
 class PassAuth(Mongo):
     def store_pass(self, password):
+        self.clear_password()
         self.col.insert_one({"password": pbkdf2_sha256.hash(password)})
 
     def verify_pass(self, password):

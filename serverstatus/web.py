@@ -39,6 +39,7 @@ class WebMongo(Mongo):
 def web_response():
     c, lst = template('web')
     c['data'] = WebMongo('web_status').get_many(lst)
+    c['meta'] = {'count': len(c['data'])}
     return c
 
 

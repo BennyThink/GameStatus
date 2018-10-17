@@ -18,9 +18,6 @@ Show my SourceServer server game status!
 * Python 3 ONLY
 * pypi package: tornado, python-valve, apscheduler, paramiko, passlib
 
-# TODO
-- [ ] security issue about login/cookies
-
 # Deployment
 ## Application and system requirements
 1. All your program must be supervised by systemd.
@@ -66,7 +63,7 @@ By default, this server listens on localhost:8888, to change it, simply use comm
 1. Install Nginx for your OS.
 
 2. Edit your Nginx's configuration, add something like below:
-```nginx
+```
 location / {
         proxy_pass http://127.0.0.1:8888; # your Python application
     }
@@ -96,7 +93,25 @@ location / {
 
 5. Start service `sudo systemctl start status.service`
 
-
+# Design
+## RESTful API
+[RESTful API Specification](https://godruoyi.com/posts/resetful-api-design-specifications)
+## Backend Pagination request format
+```json
+{
+  "page": {
+    "offset": 2,
+    "limit": 50
+  },
+  "sortby": {
+    "prop": "address_pre_deploy",
+    "order": "descending"
+  },
+  "search": {
+    "value": ""
+  }
+}
+```
 
 # License
 Licensed under the Apache License, Version 2.0.

@@ -12,6 +12,7 @@ GAME = [{"app_id": 550, "host": "game.bennythink.com", "port": 27020, "username"
         {"app_id": 730, "host": "game.bennythink.com", "port": 27015, "username": "root",
          "password": "123456", "cmd": "systemctl status csgo"},
         ]
+
 WEB = [
     {"app_id": 1, "host": "weather.bennythink.com", "username": "root", "password": "123456",
      "cmd": "systemctl status weather"},

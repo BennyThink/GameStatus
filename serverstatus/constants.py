@@ -68,8 +68,26 @@ L4D2 = {
 }
 
 TOOLS = {
-
     "https://weather.bennythink.com/": ["天气预报", "LNT", "Tornado"],
-    "https://jbls.bennythink.com/": ["JetBrains 激活器", "LNF", "Flask"],
+    "https://jbls.bennythink.com/": ["JetBrains 激活器", "LNF", "Flask"]
+}
 
+CODE = {
+    200001: "请求成功",
+    200002: "登录成功",
+    201001: "数据已刷新",
+    400001: "缺少参数 refresh",
+    401001: "登录失败",
+    401002: "缺少password字段",
+    403001: "缺少 xsrf",
+    403002: "xsrf 格式错误",
+    403003: "xsrf 验证失败",
+    403004: "cookies 登录信息错误",
+    405001: "请使用POST方法",
+    500001: "网络连接错误",
+    500002: "systemctl 命令配置失败",
+    504001: "SSH 认证失败",
+    504002: "SourceServer 连接失败",
+
+    500099: "未知错误"
 }

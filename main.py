@@ -27,12 +27,17 @@ from platform import uname
 
 from apscheduler.schedulers.background import BackgroundScheduler
 from concurrent.futures import ThreadPoolExecutor
+from paramiko.ssh_exception import SSHException
+from socket import error
 from tornado import web, ioloop, httpserver, gen, options
 from tornado.concurrent import run_on_executor
+from tornado.escape import utf8
+from tornado.web import HTTPError
 
 from serverstatus.game import game_response, game_sync
 from serverstatus.web import web_response, web_sync
 from serverstatus.ss import ss_response, ss_sync, PassAuth
+from serverstatus.constants import CODE
 
 
 class BaseHandler(web.RequestHandler):
@@ -59,14 +64,63 @@ class BaseHandler(web.RequestHandler):
             self.set_cookie('_xsrf', self.xsrf_token, expires_days=7)
         self.set_header("Content-Type", "application/json")
         res = yield self.run_request()
-
         self.write(res)
 
     @gen.coroutine
     def post(self):
-        args = self.get_argument('refresh')
-        if args:
+        try:
+            self.get_argument('refresh')
             self.sync_func()
+            self.set_status(201)
+        except HTTPError as e:
+            self.set_status(400)
+            self.write({"code": 400001, "message": CODE.get(400001), "error": str(e)})
+        except SSHException as e:
+            self.set_status(504)
+            self.write({"code": 504001, "message": CODE.get(504001), "error": str(e)})
+        except (AttributeError, TypeError) as e:
+            self.set_status(504)
+            self.write({"code": 504002, "message": CODE.get(504002), "error": str(e)})
+        except error as e:
+            self.set_status(500)
+            self.write({"code": 500001, "message": CODE.get(500001), "error": str(e)})
+        except Exception as e:
+            self.set_status(500)
+            self.write({"code": 500099, "message": CODE.get(500099), "error": str(e)})
+
+    @staticmethod
+    def _time_independent_equals(a, b):
+        if len(a) != len(b):
+            return False
+        result = 0
+        if isinstance(a[0], int):  # python3 byte strings
+            for x, y in zip(a, b):
+                result |= x ^ y
+        return result == 0
+
+    def check_xsrf_cookie(self):
+        token = (self.get_argument("_xsrf", None) or
+                 self.request.headers.get("X-Xsrftoken") or
+                 self.request.headers.get("X-Csrftoken"))
+        if not token:
+            self.set_status(403)
+            self.write({"code": 403001, "message": CODE.get(403001), "error": CODE.get(403001)})
+            self.finish()
+            raise HTTPError(403, "'_xsrf' argument missing from POST")
+
+        _, token, _ = self._decode_xsrf_token(token)
+        _, expected_token, _ = self._get_raw_xsrf_token()
+        if not token:
+            self.set_status(403)
+            self.write({"code": 403002, "message": CODE.get(403002), "error": CODE.get(403002)})
+            self.finish()
+            raise HTTPError(403, "'_xsrf' argument has invalid format")
+
+        if not self._time_independent_equals(utf8(token), utf8(expected_token)):
+            self.set_status(403)
+            self.write({"code": 403003, "message": CODE.get(403003), "error": CODE.get(403003)})
+            self.finish()
+            raise HTTPError(403, "XSRF cookie does not match POST argument")
 
 
 class IndexHandler(BaseHandler):
@@ -74,19 +128,30 @@ class IndexHandler(BaseHandler):
         self.render("pages/index.html")
 
 
-class LoginHandler(web.RequestHandler):
-
+class LoginHandler(BaseHandler):
     def data_received(self, chunk):
         pass
 
+    def get(self):
+        self.set_status(405)
+        self.write({"code": 405001, "message": CODE.get(405001), "error": CODE.get(405001)})
+
     def post(self):
-        password = self.get_argument('password')
-        result = PassAuth('ss_auth').verify_pass(password)
-        if result:
-            self.set_status(200)
-            self.set_secure_cookie('password', password, expires_days=30, httponly=True)
-        else:
+        try:
+            password = self.get_argument('password')
+            result = PassAuth('ss_auth').verify_pass(password)
+            if result:
+                self.set_status(200)
+                self.set_secure_cookie('password', password, expires_days=7, httponly=True)
+                self.write({"code": 200002, "message": CODE.get(200002), "error": CODE.get(200002)})
+            else:
+                raise AttributeError('Your password didn\'t pass verification.')
+        except HTTPError as e:
             self.set_status(401)
+            self.write({"code": 401002, "message": CODE.get(401002), "error": str(e)})
+        except AttributeError as e:
+            self.set_status(401)
+            self.write({"code": 401001, "message": CODE.get(401001), "error": str(e)})
 
 
 class GameStatusHandler(BaseHandler):
@@ -119,16 +184,17 @@ class SSStatusHandler(BaseHandler):
 
     # @web.authenticated
     def authentication(self, func):
+
         try:
             password = self.get_secure_cookie('password').decode('utf-8')
             result = PassAuth('ss_auth').verify_pass(password)
-        except AttributeError:
-            result = False
-
-        if result:
-            return func()
-        else:
-            self.set_status(401)
+            if result:
+                return func()
+            else:
+                raise AttributeError('Password mismatch, maybe you\'ve changed your password.')
+        except AttributeError as e:
+            self.set_status(403)
+            self.write({"code": 403004, "message": CODE.get(403004), "error": str(e)})
 
 
 class RunServer:
@@ -178,9 +244,9 @@ if __name__ == "__main__":
     p = options.options.p
     h = options.options.h
 
-    scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
-    scheduler.add_job(game_sync, 'interval', minutes=10)
-    scheduler.add_job(web_sync, 'interval', minutes=10)
-    scheduler.add_job(ss_sync, 'interval', minutes=60)
-    scheduler.start()
+    # scheduler = BackgroundScheduler(timezone="Asia/Shanghai")
+    # scheduler.add_job(game_sync, 'interval', minutes=10)
+    # scheduler.add_job(web_sync, 'interval', minutes=10)
+    # scheduler.add_job(ss_sync, 'interval', minutes=60)
+    # scheduler.start()
     RunServer.run_server(port=p, host=h)

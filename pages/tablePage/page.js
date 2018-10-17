@@ -79,12 +79,14 @@ let _defaultConfig = {
                 that.status_code = 200;
                 that.loading = false;
             }).catch(function (err) {
-                that.loading = false;
+                let msg = err.response ? err.response.data.message : err.message;
+                let error = err.response ? err.response : err.request;
                 that.$message({
-                    message: '数据加载失败',
+                    message: msg,
                     type: 'error'
                 });
-                console.log(err);
+                app.loading = false;
+                console.error(error);
                 that.status_code = err.response.status;
             });
         },
@@ -208,7 +210,7 @@ function addClass(text, key) {
     text = text.replace(/<span class="_p-filter-matched">.*<\/span>/g, '');
 
     //apply new style
-	text = text.replace(key, '<span style="background:yellow">' + key + '</span>');
+    text = text.replace(key, '<span style="background:yellow">' + key + '</span>');
     // restore it
     if (index !== -1 && origin !== null)
     //TODO: more Bugs come with more fix. Leave it here (/≧▽≦)/ Magic number 39
