@@ -3,6 +3,7 @@ Show my SourceServer server game status!
 
 [Benny's Status Page](https://status.bennythink.com)
 
+
 # Demo
 ## Game Status
 ![](/assets/game.jpg)
@@ -11,12 +12,15 @@ Show my SourceServer server game status!
 ## Shadowsocks Status(require simple password authentication)
 ![](/assets/ss.jpg)
 
-# Software Dependencies
-* MongoDB(default auth mechanism)
 
-# Python Requirements
+# Requirements
+## Framework
 * Python 3 ONLY
 * pypi package: tornado, python-valve, apscheduler, paramiko, passlib
+* A browser that supports [ECMAScript 6](https://en.wikipedia.org/wiki/ECMAScript#Conformance)(most modern recently browser will do)
+## ServerStatus
+* MongoDB(default auth mechanism)
+
 
 # Deployment
 ## Application and system requirements
@@ -93,25 +97,20 @@ location / {
 
 5. Start service `sudo systemctl start status.service`
 
+
 # Design
 ## RESTful API
+The API design should follow the specification:
+
 [RESTful API Specification](https://godruoyi.com/posts/resetful-api-design-specifications)
-## Backend Pagination request format
-```json
-{
-  "page": {
-    "offset": 2,
-    "limit": 50
-  },
-  "sortby": {
-    "prop": "address_pre_deploy",
-    "order": "descending"
-  },
-  "search": {
-    "value": ""
-  }
-}
-```
+## Pagination
+### Front end pagination
+In your component's js, setting `load_type: client`. Your back end should return all the data.
+### Back end pagination
+In your component's js, setting `load_type: server`. Your back end should return part of the data with data count.
+
+The query string shall like `page=3&per_page=10&sort=key&order=descending&search=hello%20world`.
+
 
 # License
 Licensed under the Apache License, Version 2.0.
