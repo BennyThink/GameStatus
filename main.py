@@ -66,7 +66,7 @@ class BaseHandler(web.RequestHandler):
         res = yield self.run_request()
         self.write(res)
 
-    @gen.coroutine
+    @run_on_executor
     def post(self):
         try:
             self.get_argument('refresh')
