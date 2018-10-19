@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="/static/css/font-awesome.min.css">
     <link rel="stylesheet" href="/static/css/style.css">
 
-    <script src="/static/js/vue.min.js" ></script>
+    <script src="/static/js/vue.min.js"></script>
     <script src="/static/js/element.min.js"></script>
     <script src="/static/js/axios.min.js" async></script>
 
@@ -44,8 +44,8 @@
 
                 <div style="float: right;display: inline-block;">
                     <el-input id="filterInput"
-                              @keydown.esc.native="textFilter='';updateTableData()"
-                              @input="searchTable()"
+                              @keydown.esc.native="textFilter='';searchTable()"
+                              @change="searchTable()"
                               placeholder="搜索"
                               prefix-icon="el-icon-search"
                               size="small"
@@ -59,6 +59,7 @@
                       ref="dataTable"
                       class="pj-table"
                       :data="tableData"
+                      @sort-change="handleSortChange"
                       stripe
                       border
                       :height="calTableHeight">

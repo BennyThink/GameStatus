@@ -16,7 +16,7 @@ let _defaultConfig = {
             size: 5,
             layout: "total, prev, pager, next, jumper, sizes"
         },
-
+        tableSort: {prop: "", order: ""},
         headerHeight: '',
         toolbarHeight: '',
         paginationHeight: '',
@@ -45,8 +45,9 @@ let _defaultConfig = {
     },
     watch: {
         textFilter: function () {
-            if (!this.textFilter) {
-                this.updateTableData();
+            // front-end search call
+            if (PageConfig.load_type === 'client') {
+                this.searchTable();
             }
         }
     },
@@ -71,9 +72,22 @@ let _defaultConfig = {
          * load data from server.
          */
         loadData: function () {
+            if (PageConfig.load_type === 'server') {
+                let page = this.tablePage.current;
+                let per_page = this.tablePage.size;
+                let sort = this.tableSort.prop;
+                let order = this.tableSort.order;
+                let search = this.textFilter;
+                let template = `?page=${page}&per_page=${per_page}&sort=${sort}&order=${order}&search=${encodeURI(search)}`;
+                let rawUrl = PageConfig.load_url.split('?page')[0];
+                PageConfig.load_url = rawUrl + template;
+            }
+
             let that = this;
             axios.get(PageConfig.load_url).then(function (res) {
                 that.rawData = res.data.data;
+                that.totalDataCount = PageConfig.load_type === 'server' ?
+                    res.data.meta.count : undefined;
                 that.parseColumn(res.data.column);
                 that.parseResult(res.data.data);
                 that.status_code = 200;
@@ -102,8 +116,12 @@ let _defaultConfig = {
         parseResult: function (result) {
             let currentPage = this.tablePage.current;
             let pagesize = this.tablePage.size;
-            this.tableData = result.slice((currentPage - 1) * pagesize, currentPage * pagesize);
-            this.totalDataCount = result.length;
+            if (PageConfig.load_type === 'server')
+                this.tableData = result;
+            else {
+                this.tableData = result.slice((currentPage - 1) * pagesize, currentPage * pagesize);
+                this.totalDataCount = result.length;
+            }
         },
         /**
          * search table content, case sensitive.
@@ -111,6 +129,11 @@ let _defaultConfig = {
          * 2. Contains some bugs that won't get fixed.
          */
         searchTable: function () {
+            // server & client
+            if (PageConfig.load_type === 'server') {
+                this.loadData();
+                return
+            }
             //vue specified
             let textFilter = this.textFilter;
             let rawData = this.rawData;
@@ -119,18 +142,30 @@ let _defaultConfig = {
             let keywordList = textFilter.trim().replace(/\s+/g, ' ').split(' ');
             let dataCooked = JSON.parse(JSON.stringify(rawData));
             let deleteIndex = [];
+
+            // kick out non-showable data
+            let props = '';
+            this.tableColumns.forEach(function (each) {
+                props = props + each.prop;
+            });
+            dataCooked.forEach(function (value) {
+                Object.keys(value).forEach(function (prop) {
+                    if (props.indexOf(prop) === -1)
+                        delete value[prop];
+                });
+            });
+
             dataCooked.forEach(function (value, index) {
                 let dataKeyList = Object.keys(value);
                 let singleLine = '';
 
                 dataKeyList.forEach(function (key) {
-                    //TODO: 1. may kick out non-showable value .
                     if (typeof value[key] !== "object") {
                         singleLine += value[key];
                     }
                     keywordList.forEach(function (keyword) {
                         if (String(value[key]).indexOf(keyword) !== -1 && typeof value[key] !== "object") {
-                            value[key] = addClass(value[key], keyword);
+                            value[key] = addClass(String(value[key]), keyword);
                         }
                     });
 
@@ -161,7 +196,10 @@ let _defaultConfig = {
          * @param d,[] data for update.
          */
         updateTableData: function (d) {
-            this.parseResult(d ? d : this.rawData);
+            if (PageConfig.load_type === 'server')
+                this.loadData();
+            else
+                this.parseResult(d ? d : this.rawData);
         },
         handlePageSizeChange: function (page_size) {
             this.tablePage.size = page_size;
@@ -169,6 +207,18 @@ let _defaultConfig = {
         },
         handlePageCurrentChange: function (current_page) {
             this.tablePage.current = current_page;
+            this.updateTableData();
+        },
+        handleSortChange: function (column) {
+            if (column.prop) {
+                this.tableSort = {
+                    prop: column.prop,
+                    order: column.order
+                };
+            } else {
+                this.tableSort = {prop: "", order: ""};
+            }
+
             this.updateTableData();
         },
 
@@ -199,6 +249,8 @@ window.onload = function () {
  * @returns {*} Tor<span class="">na</span>do
  */
 function addClass(text, key) {
+    if (key === '')
+        return text;
     let insertStr = (soure, start, newStr) => {
         return soure.slice(0, start) + newStr + soure.slice(start)
     };

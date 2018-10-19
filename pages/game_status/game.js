@@ -1,6 +1,7 @@
 let PageConfig = {
     title: "游戏服务器状态",
     load_url: AjaxUrls.game_status,
+    load_type: "client",
     eui: {
         data: {
             menu_index: "game_status",

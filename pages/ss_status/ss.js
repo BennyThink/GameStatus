@@ -1,6 +1,7 @@
 let PageConfig = {
     title: "影梭服务器状态",
     load_url: AjaxUrls.ss_status,
+    load_type: "client",
     eui: {
         data: {
             menu_index: "ss_status",
