@@ -78,20 +78,20 @@
                     return;
                 }
 
-                let that = this;
-                axios.post(AjaxUrls.login, "password=" + this.password + ';_xsrf=' + getCookie("_xsrf")).then(function (res) {
-                    that.$message({
-                        message: '登录成功！即将跳转...',
-                        type: 'success'
-                    });
-                    setTimeout(function () {
-                        window.location = '../ss_status/index.html'
-                    }, 1500);
+                axios.post(AjaxUrls.login, "password=" + this.password + ';_xsrf=' + getCookie("_xsrf"))
+                    .then((res) => {
+                        this.$message({
+                            message: '登录成功！即将跳转...',
+                            type: 'success'
+                        });
+                        setTimeout(function () {
+                            window.location = '../ss_status/index.html'
+                        }, 1500);
 
-                }).catch(function (err) {
+                    }).catch((err) => {
                     let msg = err.response ? err.response.data.message : err.message;
                     let error = err.response ? err.response : err.request;
-                    that.$message({
+                    this.$message({
                         message: msg,
                         type: 'error'
                     });

@@ -42,19 +42,17 @@ let PageConfig = {
             },
             refresh: function () {
                 app.loading = true;
-                let that = this;
-                axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then(function (res) {
+                axios.post(PageConfig.load_url, 'refresh=1;_xsrf=' + getCookie("_xsrf")).then((res) => {
                     app.loadData();
                     app.loading = false;
-
-                    that.$message({
+                    this.$message({
                         message: '刷新成功',
                         type: 'success'
                     });
-                }).catch(function (err) {
+                }).catch((err) => {
                     let msg = err.response ? err.response.data.message : err.message;
                     let error = err.response ? err.response : err.request;
-                    that.$message({
+                    this.$message({
                         message: msg,
                         type: 'error'
                     });

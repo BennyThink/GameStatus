@@ -83,25 +83,24 @@ let _defaultConfig = {
                 PageConfig.load_url = rawUrl + template;
             }
 
-            let that = this;
-            axios.get(PageConfig.load_url).then(function (res) {
-                that.rawData = res.data.data;
-                that.totalDataCount = PageConfig.load_type === 'server' ?
+            axios.get(PageConfig.load_url).then((res) => {
+                this.rawData = res.data.data;
+                this.totalDataCount = PageConfig.load_type === 'server' ?
                     res.data.meta.count : undefined;
-                that.parseColumn(res.data.column);
-                that.parseResult(res.data.data);
-                that.status_code = 200;
-                that.loading = false;
-            }).catch(function (err) {
+                this.parseColumn(res.data.column);
+                this.parseResult(res.data.data);
+                this.status_code = 200;
+                this.loading = false;
+            }).catch((err) => {
                 let msg = err.response ? err.response.data.message : err.message;
                 let error = err.response ? err.response : err.request;
-                that.$message({
+                this.$message({
                     message: msg,
                     type: 'error'
                 });
                 app.loading = false;
                 console.error(error);
-                that.status_code = err.response.status;
+                this.status_code = err.response.status;
             });
         },
         parseColumn: function (column) {
