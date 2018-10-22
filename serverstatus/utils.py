@@ -74,15 +74,41 @@ class BaseSSH:
         status_bool = True if 'running' in status_msg else False
         # CPU, memory and network account may not work for older version of systemd.
         result = re.search(self.__cpu_regex, self.output)
-        cpu = result.group(1).strip() if result else 'N/A'
+        cpu = result.group(1).strip() if result else None
 
         result = re.search(self.__memory_regex, self.output) if status_bool else 0
-        memory = result.group(1).strip() if result else 'N/A'
+        memory = result.group(1).strip() if result else None
 
         result = re.search(self.__ip_regex, self.output)
-        network = result.group(1).strip() if result else 'N/A'
+        network = result.group(1).strip() if result else None
 
+        # not so accurate call
+        if cpu is None or memory is None or network is None:
+            cpu, memory, network = self.extra()
         return cpu, memory, network, status_bool, status_msg
+
+    def extra(self):
+
+        _, free, _ = self.ssh.exec_command("free -m| sed -n '2, 1p'|awk '{print $2}'")
+        total_mem: str = free.read().decode('utf-8').replace('\n', '')
+        _, ps, _ = self.ssh.exec_command("ps -C shadowsocks-server -o pcpu=,pmem=")
+        cpu, mem = ps.read().decode('utf-8').split()
+
+        # TODO: not so accurate
+        _, ifconfig, _ = self.ssh.exec_command('ifconfig')
+        ifconfig = ifconfig.read().decode('utf-8')
+        net: str = None
+        for vm in ifconfig.split('\n\n'):
+            if '127.0.0.1' not in vm and 'RX' in vm:
+                net = vm
+        net = net.replace('iB', '')
+        try:
+            rx, tx = re.findall('\((.*?)\)', net)
+        except ValueError:
+            _, rx, tx = re.findall('\((.*?)\)', net)
+
+        return f'{cpu}%', f'{float(mem)*float(total_mem)/100}M', \
+               f'{rx.replace(" ","")} in, {tx.replace(" ","")} out'
 
 
 def template(name):
