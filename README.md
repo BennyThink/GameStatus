@@ -3,7 +3,7 @@ Show my SourceServer server game status!
 
 [Benny's Status Page](https://status.bennythink.com)
 
-
+**Warning: The current version of paramiko(2.4.2) has some serious multiple connection issue.Use my [personal fork](https://github.com/BennyThink/paramiko) to fix this issue**
 # Demo
 ## Game Status
 ![](/assets/game.jpg)
@@ -15,6 +15,14 @@ Show my SourceServer server game status!
 
 # Requirements
 ## Framework
+**About paramiko**
+```python
+pip uninstall paramiko
+git clone https://github.com/BennyThink/paramiko
+cd paramiko
+python setup.py install
+```
+
 * Python 3 ONLY
 * pypi package: tornado, python-valve, apscheduler, paramiko, passlib
 * A browser that supports [ECMAScript 6](https://en.wikipedia.org/wiki/ECMAScript#Conformance)(most modern recently browser will do)
