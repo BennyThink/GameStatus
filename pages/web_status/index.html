@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<el-container id="app" v-loading="loading">
+<el-container id="app" v-loading="loading" element-loading-text="小土豆拼命加载中">
 
     <el-header ref="headerRef" class="fw-header ">
         <div class="fw-logo"></div>
@@ -104,7 +104,15 @@
                                 <span>LNF</span>
                             </el-tooltip>
                         </div>
-
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])==100">
+                            <el-tag type="success">{{scope.row.rate}}</el-tag>
+                        </div>
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])>=90">
+                            <el-tag type="warning">{{scope.row.rate}}</el-tag>
+                        </div>
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])<90">
+                            <el-tag type="danger">{{scope.row.rate}}</el-tag>
+                        </div>
                         <div v-else-if="column.prop=='status'">
                             <el-tooltip placement="top">
                                 <div slot="content">{{scope.row.status[0]?'服务器运行中：'+scope.row.status[1]

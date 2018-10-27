@@ -16,7 +16,7 @@ Show my SourceServer server game status!
 # Requirements
 ## Framework
 **About paramiko**
-```python
+```bash
 pip uninstall paramiko
 git clone https://github.com/BennyThink/paramiko
 cd paramiko

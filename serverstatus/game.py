@@ -7,7 +7,6 @@
 
 __author__ = "Benny <benny@bennythink.com>"
 
-import logging
 import time
 
 from valve.source.a2s import ServerQuerier
@@ -66,7 +65,7 @@ class SourceMongo(Mongo):
 
 
 def game_response():
-    c, lst = template('game')
+    c, lst = template('game', GAME)
     c['data'] = SourceMongo('game_status').get_many(lst)
     c['meta'] = {'count': len(c['data'])}
     return c

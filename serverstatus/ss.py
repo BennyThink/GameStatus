@@ -55,7 +55,7 @@ class SSMongo(Mongo):
 
 
 def ss_response():
-    c, lst = template('ss')
+    c, lst = template('ss', SS)
     c['data'] = SSMongo('ss_status').get_many(lst)
     c['meta'] = {'count': len(c['data'])}
     return c

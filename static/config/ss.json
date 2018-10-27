@@ -44,6 +44,13 @@
     },
     {
       "sortable": false,
+      "prop": "rate",
+      "type": "string",
+      "label": "在线率",
+      "width": "90"
+    },
+    {
+      "sortable": false,
       "prop": "status",
       "type": "string",
       "label": "状态",

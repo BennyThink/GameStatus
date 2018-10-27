@@ -15,7 +15,8 @@ import json
 import paramiko
 import pymongo
 
-from serverstatus.config import *
+
+# from serverstatus.config import *
 
 
 class Mongo:
@@ -38,7 +39,7 @@ class Mongo:
     def get_one(self, app_id):
         data = self.col.find({"app_id": app_id}).sort("_id", -1).limit(1).next()
         data['status'][2] = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(data['status'][2]))
-
+        data['rate'] = self.success_rate(app_id)
         if not data['status'][0]:
             tmp = self.col.find({"app_id": app_id, "status": {"$in": [True]}}).sort("_id", -1).limit(1).next()
             tmp['status'] = data['status']
@@ -49,6 +50,11 @@ class Mongo:
 
     def get_many(self, id_list):
         return [self.get_one(_id) for _id in id_list]
+
+    def success_rate(self, app_id):
+        total_records = self.col.count_documents({'app_id': app_id})
+        success_records = self.col.count_documents({'app_id': app_id, 'status': True})
+        return '%.2f%%' % (success_records / total_records * 100)
 
 
 class BaseSSH:
@@ -111,11 +117,11 @@ class BaseSSH:
                f'{rx.replace(" ","")} in, {tx.replace(" ","")} out'
 
 
-def template(name):
+def template(name, conf):
     json_file = f'{name}.json'
     path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'static', 'config', json_file)
     with open(path, encoding='utf-8') as f:
         c = json.load(f)
 
-    lst = [item['app_id'] for item in eval(name.upper())]
+    lst = [item['app_id'] for item in conf]
     return c, lst

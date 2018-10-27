@@ -21,7 +21,6 @@
       "label": "地址",
       "width": ""
     },
-
     {
       "sortable": false,
       "prop": "map",
@@ -49,6 +48,13 @@
       "type": "string",
       "label": "内存",
       "width": "80"
+    },
+    {
+      "sortable": false,
+      "prop": "rate",
+      "type": "string",
+      "label": "在线率",
+      "width": "90"
     },
     {
       "sortable": false,

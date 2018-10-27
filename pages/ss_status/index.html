@@ -15,7 +15,7 @@
 </head>
 <body>
 
-<el-container id="app" v-loading="loading">
+<el-container id="app" v-loading="loading" element-loading-text="小土豆拼命加载中">
 
     <el-header ref="headerRef" class="fw-header ">
         <div class="fw-logo"></div>
@@ -88,6 +88,15 @@
                                 </el-switch>
                             </el-tooltip>
                         </div>
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])==100">
+                            <el-tag type="success">{{scope.row.rate}}</el-tag>
+                        </div>
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])>=90">
+                            <el-tag type="warning">{{scope.row.rate}}</el-tag>
+                        </div>
+                        <div v-else-if="column.prop=='rate' && eval(scope.row.rate.split('%')[0])<90">
+                            <el-tag type="danger">{{scope.row.rate}}</el-tag>
+                        </div>
                         <div v-else-if="column.prop=='port_pass'">
                             <el-popover
                                     placement="bottom"
@@ -152,6 +161,6 @@
 
 </body>
 
-<script src="ss.js" async></script>
+<script src="ss.js"></script>
 <script src="../tablePage/page.js" async></script>
 </html>
