@@ -32,6 +32,7 @@ class SourceServer(BaseSSH):
     def __del__(self):
         if self.__server:
             self.__server.close()
+        super().__del__()
 
     def parse_info(self):
         """
