@@ -137,7 +137,6 @@ let _defaultConfig = {
             let textFilter = this.textFilter;
             let rawData = this.rawData;
 
-            // TODO: 2. Bug fix, keywords containing weather / would fail
             let keywordList = textFilter.trim().replace(/\s+/g, ' ').split(' ');
             let dataCooked = JSON.parse(JSON.stringify(rawData));
             let deleteIndex = [];
@@ -162,11 +161,9 @@ let _defaultConfig = {
                     if (typeof value[key] !== "object") {
                         singleLine += value[key];
                     }
-                    keywordList.forEach(function (keyword) {
-                        if (String(value[key]).indexOf(keyword) !== -1 && typeof value[key] !== "object") {
-                            value[key] = addClass(String(value[key]), keyword);
-                        }
-                    });
+
+                    if (keywordList[0])
+                        value[key] = addClass(String(value[key]), keywordList);
 
                 });
                 keywordList.forEach(function (kw) {
@@ -244,30 +241,25 @@ window.onload = function () {
 /**
  * add <span> for keywords
  * @param text single cell
- * @param key keywords for highlight
+ * @param filters keywords for highlight, ['F', 'p']
  * @returns {*} Tor<span class="">na</span>do
  */
-function addClass(text, key) {
-    if (key === '')
+function addClass(text, filters) {
+    if (!filters.length)
         return text;
-    let insertStr = (soure, start, newStr) => {
-        return soure.slice(0, start) + newStr + soure.slice(start)
+
+    String.prototype.replaceAll = function (filters, RepText, token) {
+        let regExp = new RegExp(filters.join("|"), "gi");
+
+        return this.replace(regExp, (match) => {
+            return RepText.replace(token, match);
+        });
     };
-    let origin;
-    let index;
 
-    origin = text.match(/<span class="_p-filter-matched">.*<\/span>/g);
-    index = text.search(/<span class="_p-filter-matched">.*<\/span>/g);
-    text = text.replace(/<span class="_p-filter-matched">.*<\/span>/g, '');
+    let repText = "<span style=\"background:yellow\">*filter*</span>";
+    let token = "*filter*";
 
-    //apply new style
-    text = text.replace(key, '<span style="background:yellow">' + key + '</span>');
-    // restore it
-    if (index !== -1 && origin !== null)
-    //TODO: more Bugs come with more fix. Leave it here (/≧▽≦)/ Magic number 39
-        text = insertStr(text, index, origin[0]);
-    return text;
-
+    return text.replaceAll(filters, repText, token);
 }
 
 function getCookie(name) {
